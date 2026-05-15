@@ -170,8 +170,9 @@ p.lead{ margin:0; color:var(--muted); font-size:13px }
         </div>
       </div>
 
-      <div class="controls" role="toolbar" aria-label="actions">
-        <button class="control-btn" style="padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);">Export</button>
+      <div class="controls" role="toolbar" aria-label="actions" style="display:flex;gap:8px;">
+        <button class="control-btn" style="padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);cursor:pointer;font-family:Poppins,sans-serif;" onclick="window.print()">🖨 Print</button>
+        <button class="control-btn" style="padding:10px 14px;border-radius:12px;border:1px solid rgba(155,107,255,0.3);background:linear-gradient(135deg,#9b6bff,#6d2cff);color:#fff;cursor:pointer;font-family:Poppins,sans-serif;font-weight:600;" onclick="exportCSV()">📊 Export CSV</button>
       </div>
     </div>
 
@@ -686,4 +687,44 @@ p.lead{ margin:0; color:var(--muted); font-size:13px }
 </div>
 
 </body>
+
+<!-- Print Styles -->
+<style media="print">
+  nav, .center-cta, .controls { display:none !important; }
+  body { background:#fff !important; color:#222 !important; font-size:12px; }
+  .wrap { max-width:100% !important; padding:10px !important; }
+  .glow, .bg-layers { display:none !important; }
+  .entry, .summary-cards > div { border:1px solid #ddd !important; background:#fff !important; }
+  h1, h2, .name, .section-title { color:#222 !important; }
+  .badge, .stat-pill { border:1px solid #ccc !important; color:#333 !important; }
+</style>
+
+<script>
+function exportCSV() {
+  const rows = [
+    ["Faculty", "Subject", "Clarity", "Teaching", "Engagement", "Comment", "Date"]
+  ];
+
+  document.querySelectorAll(".entry").forEach(entry => {
+    const name = entry.querySelector(".name")?.textContent?.trim() || "";
+    const subject = entry.querySelector(".subject")?.textContent?.split("—")[0]?.trim() || "";
+    const badges = entry.querySelectorAll(".badge");
+    const clarity = badges[0]?.textContent?.trim() || "";
+    const teaching = badges[1]?.textContent?.trim() || "";
+    const engagement = badges[2]?.textContent?.trim() || "";
+    const comment = entry.querySelector(".comment")?.textContent?.trim() || "";
+    const date = entry.querySelector(".subject")?.textContent?.split("—")[1]?.trim() || "";
+    rows.push([name, subject, clarity, teaching, engagement, comment, date]);
+  });
+
+  const csv = rows.map(r => r.map(c => '"' + c.replace(/"/g, '""') + '"').join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "feedback_report_" + new Date().toISOString().split("T")[0] + ".csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
 </html>

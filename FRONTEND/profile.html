@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Profile — FacultyLens</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --glass: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.12);
+  --accent: #9b6bff;
+  --accent-dark: #6d2cff;
+  --text: #eaeaea;
+  --muted: #bfb5e0;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:"Poppins",sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+.glow-bg { position:fixed; width:700px; height:700px; background:radial-gradient(circle,rgba(140,70,255,0.5),transparent); top:-200px; right:-150px; filter:blur(150px); z-index:-1; animation:float 14s infinite alternate ease-in-out; }
+.glow-bg-2 { position:fixed; width:500px; height:500px; background:radial-gradient(circle,rgba(94,199,255,0.15),transparent); bottom:-150px; left:-100px; filter:blur(140px); z-index:-1; animation:float 18s infinite alternate ease-in-out; }
+@keyframes float { from{transform:translate(0,0)} to{transform:translate(-100px,70px)} }
+
+.nav { background:var(--glass); border-bottom:1px solid var(--glass-border); backdrop-filter:blur(18px); padding:16px 40px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; }
+.nav-brand { font-size:24px; font-weight:700; color:#d2c7ff; text-decoration:none; }
+.nav-links { display:flex; gap:24px; list-style:none; }
+.nav-links a { color:var(--muted); text-decoration:none; font-weight:500; transition:0.3s; }
+.nav-links a:hover { color:#d5b4ff; text-shadow:0 0 10px rgba(180,140,255,0.8); }
+
+.container { max-width:900px; margin:40px auto; padding:0 20px; }
+
+.profile-header { display:flex; align-items:center; gap:28px; margin-bottom:32px; }
+.avatar-circle { width:100px; height:100px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent-dark)); display:flex; align-items:center; justify-content:center; font-size:40px; font-weight:700; color:#fff; box-shadow:0 0 30px rgba(155,107,255,0.4); flex-shrink:0; }
+.profile-info h1 { font-size:28px; color:#d6c9ff; margin-bottom:4px; }
+.profile-info .role-badge { display:inline-block; padding:4px 14px; border-radius:20px; font-size:12px; font-weight:600; background:rgba(94,199,255,0.15); color:#5ec7ff; }
+
+.card { background:var(--glass); border:1px solid var(--glass-border); border-radius:18px; padding:28px; backdrop-filter:blur(18px); margin-bottom:24px; transition:0.3s; }
+.card:hover { border-color:rgba(180,140,255,0.4); box-shadow:0 0 25px rgba(160,120,255,0.25); }
+.card h3 { color:#d6c9ff; font-size:18px; margin-bottom:18px; display:flex; align-items:center; gap:10px; }
+
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.form-group { display:flex; flex-direction:column; }
+.form-group label { font-size:13px; color:var(--muted); margin-bottom:6px; font-weight:500; }
+.form-group input, .form-group select { padding:12px 14px; border-radius:10px; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.18); color:#fff; font-family:"Poppins",sans-serif; font-size:14px; outline:none; transition:0.3s; }
+.form-group input:focus, .form-group select:focus { border-color:var(--accent); box-shadow:0 0 10px rgba(155,107,255,0.4); }
+.form-group input:disabled { opacity:0.5; cursor:not-allowed; }
+.form-group select option { background:#1a1a2e; }
+
+.btn { padding:12px 24px; border:none; border-radius:12px; font-family:"Poppins",sans-serif; font-weight:600; font-size:14px; cursor:pointer; transition:0.3s; }
+.btn-primary { background:linear-gradient(135deg,var(--accent),var(--accent-dark)); color:#fff; box-shadow:0 6px 20px rgba(140,80,255,0.35); }
+.btn-primary:hover { transform:translateY(-2px); box-shadow:0 10px 28px rgba(140,80,255,0.5); }
+.btn-outline { background:transparent; border:1px solid rgba(255,255,255,0.2); color:var(--muted); }
+.btn-outline:hover { background:rgba(255,255,255,0.05); color:#fff; }
+.btn-danger { background:rgba(255,107,107,0.15); border:1px solid rgba(255,107,107,0.3); color:#ff6b6b; }
+.btn-danger:hover { background:rgba(255,107,107,0.25); }
+.btn-row { display:flex; gap:12px; margin-top:8px; }
+
+.stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.stat-item { text-align:center; padding:16px; background:rgba(255,255,255,0.03); border-radius:12px; border:1px solid rgba(255,255,255,0.06); }
+.stat-item .num { font-size:28px; font-weight:700; color:#c084fc; }
+.stat-item .label { font-size:12px; color:var(--muted); margin-top:4px; }
+
+.toggle-row { display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid rgba(255,255,255,0.06); }
+.toggle-row:last-child { border:none; }
+.toggle-row .info .title { font-size:14px; font-weight:600; }
+.toggle-row .info .desc { font-size:12px; color:var(--muted); }
+
+.toggle-switch { position:relative; width:48px; height:26px; }
+.toggle-switch input { display:none; }
+.toggle-switch .slider { position:absolute; inset:0; background:rgba(255,255,255,0.1); border-radius:26px; cursor:pointer; transition:0.3s; }
+.toggle-switch .slider::after { content:""; position:absolute; width:20px; height:20px; background:#fff; border-radius:50%; top:3px; left:3px; transition:0.3s; }
+.toggle-switch input:checked + .slider { background:var(--accent); }
+.toggle-switch input:checked + .slider::after { transform:translateX(22px); }
+
+.toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg,#9b6bff,#6d2cff); color:#fff; padding:12px 28px; border-radius:12px; font-size:14px; font-weight:500; box-shadow:0 10px 30px rgba(140,80,255,0.5); z-index:9999; animation:toastIn 0.4s ease; }
+@keyframes toastIn { from{opacity:0;transform:translateX(-50%) translateY(20px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+
+@media(max-width:600px) {
+  .form-row { grid-template-columns:1fr; }
+  .stat-grid { grid-template-columns:1fr; }
+  .profile-header { flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+<div class="glow-bg"></div>
+<div class="glow-bg-2"></div>
+
+<nav class="nav">
+  <a href="dashboard.html" class="nav-brand">FacultyLens</a>
+  <ul class="nav-links">
+    <li><a href="dashboard.html">Dashboard</a></li>
+    <li><a href="Faculties/faculties.html">Faculty</a></li>
+    <li><a href="essentials/submit-feedback.html">Submit</a></li>
+    <li><a href="essentials/report.html">Reports</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <!-- Profile Header -->
+  <div class="profile-header">
+    <div class="avatar-circle" id="avatarInitial">S</div>
+    <div class="profile-info">
+      <h1 id="profileName">Student User</h1>
+      <span class="role-badge" id="roleBadge">Student</span>
+      <p style="color:var(--muted);font-size:13px;margin-top:6px;" id="memberSince">Member since May 2025</p>
+    </div>
+  </div>
+
+  <!-- Activity Stats -->
+  <div class="card">
+    <h3>📊 Your Activity</h3>
+    <div class="stat-grid">
+      <div class="stat-item">
+        <div class="num" id="feedbackGiven">12</div>
+        <div class="label">Feedback Given</div>
+      </div>
+      <div class="stat-item">
+        <div class="num" id="facultyRated">8</div>
+        <div class="label">Faculty Rated</div>
+      </div>
+      <div class="stat-item">
+        <div class="num" id="avgScore">8.7</div>
+        <div class="label">Avg Score Given</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal Information -->
+  <div class="card">
+    <h3>👤 Personal Information</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="fullName" value="Demo Student">
+      </div>
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="emailField" value="student@facultylens.edu" disabled>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Department</label>
+        <select id="department">
+          <option selected>Data Science Engineering</option>
+          <option>Computer Science</option>
+          <option>Information Science</option>
+          <option>Electronics & Communication</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Semester</label>
+        <select id="semester">
+          <option>1st Semester</option>
+          <option>2nd Semester</option>
+          <option selected>3rd Semester</option>
+          <option>4th Semester</option>
+          <option>5th Semester</option>
+          <option>6th Semester</option>
+          <option>7th Semester</option>
+          <option>8th Semester</option>
+        </select>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="saveProfileBtn">Save Changes</button>
+      <button class="btn btn-outline" onclick="location.reload()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Change Password -->
+  <div class="card">
+    <h3>🔑 Change Password</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Current Password</label>
+        <input type="password" id="currentPw" placeholder="Enter current password">
+      </div>
+      <div class="form-group">
+        <label>New Password</label>
+        <input type="password" id="newPw" placeholder="Enter new password">
+      </div>
+    </div>
+    <div class="form-group" style="margin-bottom:16px;">
+      <label>Confirm New Password</label>
+      <input type="password" id="confirmPw" placeholder="Confirm new password" style="max-width:calc(50% - 8px);">
+    </div>
+    <button class="btn btn-primary" id="changePwBtn">Update Password</button>
+  </div>
+
+  <!-- Preferences -->
+  <div class="card">
+    <h3>⚙️ Preferences</h3>
+
+    <div class="toggle-row">
+      <div class="info">
+        <div class="title">Email Notifications</div>
+        <div class="desc">Receive feedback confirmation via email</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked id="emailNotif">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div class="info">
+        <div class="title">Anonymous Mode</div>
+        <div class="desc">Your identity is hidden from faculty in all feedback</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked id="anonMode">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div class="info">
+        <div class="title">Dark Mode</div>
+        <div class="desc">Toggle between dark and light theme</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" checked id="darkMode">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Danger Zone -->
+  <div class="card" style="border-color:rgba(255,107,107,0.2);">
+    <h3>⚠️ Danger Zone</h3>
+    <div class="toggle-row">
+      <div class="info">
+        <div class="title" style="color:#ff6b6b;">Delete Account</div>
+        <div class="desc">Permanently remove your account and all associated data</div>
+      </div>
+      <button class="btn btn-danger" onclick="if(confirm('Are you sure? This action cannot be undone.')){showToast('Account deletion requested');}" >Delete</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) { window.location.href = "index.html"; return; }
+
+  // Populate profile from localStorage
+  const name = user.email ? user.email.split("@")[0] : "Student";
+  document.getElementById("profileName").textContent = name.charAt(0).toUpperCase() + name.slice(1);
+  document.getElementById("avatarInitial").textContent = name.charAt(0).toUpperCase();
+  document.getElementById("emailField").value = user.email || "";
+
+  // Save profile
+  document.getElementById("saveProfileBtn").addEventListener("click", () => {
+    showToast("✅ Profile saved successfully");
+  });
+
+  // Change password
+  document.getElementById("changePwBtn").addEventListener("click", () => {
+    const curr = document.getElementById("currentPw").value;
+    const newP = document.getElementById("newPw").value;
+    const conf = document.getElementById("confirmPw").value;
+
+    if (!curr || !newP || !conf) return showToast("⚠️ Fill all password fields");
+    if (newP.length < 6) return showToast("⚠️ Password must be 6+ characters");
+    if (newP !== conf) return showToast("⚠️ Passwords don't match");
+
+    showToast("✅ Password updated successfully");
+    document.getElementById("currentPw").value = "";
+    document.getElementById("newPw").value = "";
+    document.getElementById("confirmPw").value = "";
+  });
+
+  // Toast
+  window.showToast = function(msg) {
+    const existing = document.querySelector(".toast");
+    if (existing) existing.remove();
+    const t = document.createElement("div");
+    t.className = "toast";
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(() => { t.style.opacity = "0"; t.style.transition = "opacity 0.3s"; setTimeout(() => t.remove(), 300); }, 2500);
+  };
+});
+</script>
+</body>
+</html>
