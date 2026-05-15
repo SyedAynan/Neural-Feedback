@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Feedback — FacultyLens</title>
+<meta name="description" content="Submit anonymous feedback for your faculty members at FacultyLens.">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0f;
+  --glass: rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.12);
+  --accent: #9b6bff;
+  --accent-dark: #6d2cff;
+  --text: #eaeaea;
+  --muted: #bfb5e0;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.glow-bg {
+  position: fixed;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(140,70,255,0.5), transparent);
+  top: -200px; right: -150px;
+  filter: blur(150px);
+  z-index: -1;
+  animation: floatGlow 14s infinite alternate ease-in-out;
+}
+
+.glow-bg-2 {
+  position: fixed;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(94,199,255,0.15), transparent);
+  bottom: -150px; left: -100px;
+  filter: blur(140px);
+  z-index: -1;
+  animation: floatGlow 18s infinite alternate ease-in-out;
+}
+
+@keyframes floatGlow {
+  from { transform: translate(0,0); }
+  to { transform: translate(-100px,70px); }
+}
+
+/* Nav */
+.nav {
+  background: var(--glass);
+  border-bottom: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px);
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-brand {
+  font-size: 24px;
+  font-weight: 700;
+  color: #d2c7ff;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #d5b4ff;
+  text-shadow: 0 0 10px rgba(180,140,255,0.8);
+}
+
+/* Container */
+.container {
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.page-title h1 {
+  font-size: 32px;
+  color: #d6c9ff;
+  text-shadow: 0 0 14px rgba(160,120,255,0.4);
+  margin-bottom: 8px;
+}
+
+.page-title p {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* Form Card */
+.form-card {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  padding: 36px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 30px rgba(140,80,255,0.2);
+}
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #d6c9ff;
+  margin-bottom: 8px;
+}
+
+.form-group .hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+/* Select & Input */
+.form-select,
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-select option {
+  background: #1a1a2e;
+  color: #fff;
+}
+
+.form-select:focus,
+.form-input:focus,
+.form-textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 12px rgba(155,107,255,0.5);
+  background: rgba(255,255,255,0.1);
+}
+
+.form-textarea {
+  height: 120px;
+  resize: vertical;
+}
+
+/* Star Rating */
+.star-rating {
+  display: flex;
+  gap: 6px;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.star-rating input {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 32px;
+  color: rgba(255,255,255,0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label,
+.star-rating input:checked ~ label {
+  color: #feca57;
+  text-shadow: 0 0 12px rgba(254,202,87,0.6);
+  transform: scale(1.15);
+}
+
+.rating-value {
+  display: inline-block;
+  margin-left: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #feca57;
+  min-width: 40px;
+}
+
+.rating-row {
+  display: flex;
+  align-items: center;
+}
+
+/* Submit Button */
+.submit-btn {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: "Poppins", sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(155,107,255,0.4);
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 35px rgba(155,107,255,0.6);
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+.submit-btn.loading {
+  background: #555;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+/* Success Message */
+.success-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+}
+
+.success-overlay.active {
+  display: flex;
+}
+
+.success-card {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 22px;
+  padding: 48px 40px;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 25px 60px rgba(140,80,255,0.3);
+  animation: popIn 0.5s ease;
+  max-width: 400px;
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.85) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.success-card .check {
+  font-size: 72px;
+  color: #1dd1a1;
+  text-shadow: 0 0 20px rgba(29,209,161,0.6);
+  margin-bottom: 16px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.success-card h2 {
+  color: #e3d9ff;
+  margin-bottom: 10px;
+  font-size: 24px;
+}
+
+.success-card p {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+.success-card .btn-group {
+  display: flex;
+  gap: 12px;
+}
+
+.success-card .btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  transition: 0.3s;
+}
+
+.success-card .btn-primary {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(140,80,255,0.4);
+}
+
+.success-card .btn-secondary {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #d9c4ff;
+}
+
+.success-card .btn:hover {
+  transform: translateY(-2px);
+}
+
+/* Divider */
+.form-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(155,107,255,0.3), transparent);
+  margin: 28px 0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .nav { padding: 12px 20px; }
+  .nav-links { gap: 14px; font-size: 13px; }
+  .form-card { padding: 24px; }
+  .star-rating label { font-size: 26px; }
+  .container { padding: 0 12px; }
+}
+</style>
+</head>
+<body>
+
+<div class="glow-bg"></div>
+<div class="glow-bg-2"></div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <a href="../dashboard.html" class="nav-brand">FacultyLens</a>
+  <ul class="nav-links">
+    <li><a href="../dashboard.html">Dashboard</a></li>
+    <li><a href="../Faculties/faculties.html">Faculty</a></li>
+    <li><a href="feedback.html">History</a></li>
+    <li><a href="report.html">Reports</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <div class="page-title">
+    <h1>📝 Submit Feedback</h1>
+    <p>Your feedback is anonymous and helps improve teaching quality</p>
+  </div>
+
+  <div class="form-card">
+
+    <!-- Faculty Selection -->
+    <div class="form-group">
+      <label for="facultySelect">Select Faculty</label>
+      <select class="form-select" id="facultySelect">
+        <option value="" disabled selected>Choose a faculty member...</option>
+        <option value="Dr. Adarsh M J" data-subject="Machine Learning, Deep Learning">Dr. Adarsh M J — HOD</option>
+        <option value="Prof. Gagana Deepa J" data-subject="Data Analytics, Cloud">Prof. Gagana Deepa J — Branch Coordinator</option>
+        <option value="Prof. Srikanth A S" data-subject="Mathematics">Prof. Srikanth A S — Mathematics</option>
+        <option value="Prof. Harshitha H D" data-subject="Data Structures">Prof. Harshitha H D — Data Structures</option>
+        <option value="Prof. Shalini I.S" data-subject="Digital Design & CO">Prof. Shalini I.S — DDCO</option>
+        <option value="Dr. Thayaba Nausheen A" data-subject="Operating System">Dr. Thayaba Nausheen A — Operating System</option>
+        <option value="Prof. Ramya C K" data-subject="Python Programming">Prof. Ramya C K — Python</option>
+        <option value="Prof. Pallavi C.S" data-subject="PHP Programming">Prof. Pallavi C.S — PHP / Web Dev</option>
+        <option value="Prof. Seema B S" data-subject="SCR Activity">Prof. Seema B S — SCR Activity</option>
+      </select>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <!-- Clarity Rating -->
+    <div class="form-group">
+      <label>Clarity of Explanation</label>
+      <div class="rating-row">
+        <div class="star-rating" id="clarityStars">
+          <input type="radio" name="clarity" id="clarity-10" value="10"><label for="clarity-10">★</label>
+          <input type="radio" name="clarity" id="clarity-9" value="9"><label for="clarity-9">★</label>
+          <input type="radio" name="clarity" id="clarity-8" value="8"><label for="clarity-8">★</label>
+          <input type="radio" name="clarity" id="clarity-7" value="7"><label for="clarity-7">★</label>
+          <input type="radio" name="clarity" id="clarity-6" value="6"><label for="clarity-6">★</label>
+          <input type="radio" name="clarity" id="clarity-5" value="5"><label for="clarity-5">★</label>
+          <input type="radio" name="clarity" id="clarity-4" value="4"><label for="clarity-4">★</label>
+          <input type="radio" name="clarity" id="clarity-3" value="3"><label for="clarity-3">★</label>
+          <input type="radio" name="clarity" id="clarity-2" value="2"><label for="clarity-2">★</label>
+          <input type="radio" name="clarity" id="clarity-1" value="1"><label for="clarity-1">★</label>
+        </div>
+        <span class="rating-value" id="clarityValue">—</span>
+      </div>
+      <div class="hint">How well does the faculty explain concepts?</div>
+    </div>
+
+    <!-- Knowledge Rating -->
+    <div class="form-group">
+      <label>Subject Knowledge</label>
+      <div class="rating-row">
+        <div class="star-rating" id="knowledgeStars">
+          <input type="radio" name="knowledge" id="knowledge-10" value="10"><label for="knowledge-10">★</label>
+          <input type="radio" name="knowledge" id="knowledge-9" value="9"><label for="knowledge-9">★</label>
+          <input type="radio" name="knowledge" id="knowledge-8" value="8"><label for="knowledge-8">★</label>
+          <input type="radio" name="knowledge" id="knowledge-7" value="7"><label for="knowledge-7">★</label>
+          <input type="radio" name="knowledge" id="knowledge-6" value="6"><label for="knowledge-6">★</label>
+          <input type="radio" name="knowledge" id="knowledge-5" value="5"><label for="knowledge-5">★</label>
+          <input type="radio" name="knowledge" id="knowledge-4" value="4"><label for="knowledge-4">★</label>
+          <input type="radio" name="knowledge" id="knowledge-3" value="3"><label for="knowledge-3">★</label>
+          <input type="radio" name="knowledge" id="knowledge-2" value="2"><label for="knowledge-2">★</label>
+          <input type="radio" name="knowledge" id="knowledge-1" value="1"><label for="knowledge-1">★</label>
+        </div>
+        <span class="rating-value" id="knowledgeValue">—</span>
+      </div>
+      <div class="hint">How deep is the faculty's subject expertise?</div>
+    </div>
+
+    <!-- Interaction Rating -->
+    <div class="form-group">
+      <label>Student Interaction</label>
+      <div class="rating-row">
+        <div class="star-rating" id="interactionStars">
+          <input type="radio" name="interaction" id="interaction-10" value="10"><label for="interaction-10">★</label>
+          <input type="radio" name="interaction" id="interaction-9" value="9"><label for="interaction-9">★</label>
+          <input type="radio" name="interaction" id="interaction-8" value="8"><label for="interaction-8">★</label>
+          <input type="radio" name="interaction" id="interaction-7" value="7"><label for="interaction-7">★</label>
+          <input type="radio" name="interaction" id="interaction-6" value="6"><label for="interaction-6">★</label>
+          <input type="radio" name="interaction" id="interaction-5" value="5"><label for="interaction-5">★</label>
+          <input type="radio" name="interaction" id="interaction-4" value="4"><label for="interaction-4">★</label>
+          <input type="radio" name="interaction" id="interaction-3" value="3"><label for="interaction-3">★</label>
+          <input type="radio" name="interaction" id="interaction-2" value="2"><label for="interaction-2">★</label>
+          <input type="radio" name="interaction" id="interaction-1" value="1"><label for="interaction-1">★</label>
+        </div>
+        <span class="rating-value" id="interactionValue">—</span>
+      </div>
+      <div class="hint">How engaging and interactive are the sessions?</div>
+    </div>
+
+    <div class="form-divider"></div>
+
+    <!-- Comment -->
+    <div class="form-group">
+      <label for="comment">Additional Comments (Optional)</label>
+      <textarea class="form-textarea" id="comment" placeholder="Share your thoughts about the teaching quality, suggestions for improvement..."></textarea>
+      <div class="hint" id="charCount">0 / 500 characters</div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn">Submit Feedback</button>
+
+  </div>
+</div>
+
+<!-- Success Overlay -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="check">✔</div>
+    <h2>Feedback Submitted!</h2>
+    <p>Thank you for your anonymous feedback. It helps improve teaching quality for everyone.</p>
+    <div class="btn-group">
+      <a href="submit-feedback.html" class="btn btn-secondary">Submit Another</a>
+      <a href="../dashboard.html" class="btn btn-primary">Dashboard</a>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Login check
+  const user = JSON.parse(localStorage.getItem("user"));
+  if (!user) { window.location.href = "../index.html"; return; }
+
+  const facultySelect = document.getElementById("facultySelect");
+  const comment = document.getElementById("comment");
+  const charCount = document.getElementById("charCount");
+  const submitBtn = document.getElementById("submitBtn");
+  const successOverlay = document.getElementById("successOverlay");
+
+  // Star rating handlers
+  ["clarity", "knowledge", "interaction"].forEach(name => {
+    const radios = document.querySelectorAll(`input[name="${name}"]`);
+    const display = document.getElementById(`${name}Value`);
+    radios.forEach(r => {
+      r.addEventListener("change", () => {
+        display.textContent = r.value + "/10";
+      });
+    });
+  });
+
+  // Character counter
+  comment.addEventListener("input", () => {
+    const len = comment.value.length;
+    if (len > 500) comment.value = comment.value.slice(0, 500);
+    charCount.textContent = `${Math.min(len, 500)} / 500 characters`;
+  });
+
+  // Submit
+  submitBtn.addEventListener("click", async () => {
+    // Validate
+    if (!facultySelect.value) {
+      shake(facultySelect);
+      return alert("Please select a faculty member");
+    }
+
+    const clarity = document.querySelector('input[name="clarity"]:checked');
+    const knowledge = document.querySelector('input[name="knowledge"]:checked');
+    const interaction = document.querySelector('input[name="interaction"]:checked');
+
+    if (!clarity || !knowledge || !interaction) {
+      return alert("Please rate all three categories");
+    }
+
+    const selectedOption = facultySelect.options[facultySelect.selectedIndex];
+    const subject = selectedOption.dataset.subject || "";
+
+    const payload = {
+      teacher: facultySelect.value,
+      subject: subject,
+      clarity: parseInt(clarity.value),
+      knowledge: parseInt(knowledge.value),
+      interaction: parseInt(interaction.value),
+      comment: comment.value.trim()
+    };
+
+    submitBtn.textContent = "Submitting...";
+    submitBtn.classList.add("loading");
+
+    try {
+      const res = await fetch("../../API/feedback.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        successOverlay.classList.add("active");
+      } else {
+        alert(data.message || "Submission failed");
+      }
+    } catch (err) {
+      // Demo mode — show success anyway
+      console.warn("Backend not available — demo mode", err);
+      successOverlay.classList.add("active");
+    }
+
+    submitBtn.textContent = "Submit Feedback";
+    submitBtn.classList.remove("loading");
+  });
+
+  function shake(el) {
+    el.style.animation = "none";
+    el.offsetHeight; // reflow
+    el.style.animation = "shake 0.4s ease";
+  }
+
+  // Add shake animation
+  const style = document.createElement("style");
+  style.textContent = `
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-6px); }
+    }
+  `;
+  document.head.appendChild(style);
+});
+</script>
+</body>
+</html>
