@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FacultyLens | Sign Up</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Create your FacultyLens account — the anonymous faculty feedback portal for Data Science Engineering.">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="signup.css">
+
+  <style>
+    /* Extra styles specific to this page */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #0a0a0f;
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .glow-bg {
+      position: fixed;
+      width: 650px; height: 650px;
+      background: radial-gradient(circle, rgba(140,70,255,0.6), transparent);
+      top: -150px; left: -150px;
+      filter: blur(140px);
+      z-index: -1;
+      animation: floatGlow 12s infinite alternate ease-in-out;
+    }
+
+    @keyframes floatGlow {
+      from { transform: translate(0,0); }
+      to   { transform: translate(80px,60px); }
+    }
+
+    .logo {
+      position: absolute;
+      top: 20px; left: 20px;
+      font-size: 32px; font-weight: 700;
+      letter-spacing: 3px;
+      color: #d2c7ff;
+    }
+
+    .signup-box {
+      width: 400px;
+      padding: 36px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 22px;
+      border: 1px solid rgba(255,255,255,0.12);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 0 30px rgba(140,80,255,.4);
+      animation: fadeUp .7s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .signup-box h2 {
+      text-align: center;
+      margin-bottom: 8px;
+      color: #d6c9ff;
+    }
+
+    .signup-box .subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: #cdbbff;
+      margin-bottom: 22px;
+    }
+
+    .input-group {
+      margin-bottom: 14px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 14px;
+      color: #bfb5e0;
+    }
+
+    .input-group input,
+    .input-group select {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .input-group input:focus,
+    .input-group select:focus {
+      border-color: #b18cff;
+      box-shadow: 0 0 10px rgba(177,140,255,0.6);
+      background: rgba(255,255,255,0.1);
+    }
+
+    .input-group select option {
+      background: #1a1a2e;
+      color: #fff;
+    }
+
+    #signupBtn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #9b6bff, #6d2cff);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 6px;
+    }
+
+    #signupBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(155,107,255,0.6);
+    }
+
+    #signupBtn.loading {
+      background: #555;
+      pointer-events: none;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 14px;
+      color: #bfb5e0;
+    }
+
+    .login-link a {
+      color: #c9a6ff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+      color: #e0c8ff;
+    }
+
+    #msg {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 13px;
+      min-height: 20px;
+    }
+
+    .msg-success { color: #1dd1a1; }
+    .msg-error   { color: #ff6b6b; }
+
+    .strength {
+      font-size: 12px;
+      margin-top: 4px;
+    }
+    .weak   { color: #ff6b6b; }
+    .medium { color: #feca57; }
+    .strong { color: #1dd1a1; }
+  </style>
+</head>
+
+<body>
+  <!-- Glow -->
+  <div class="glow-bg"></div>
+
+  <!-- Logo -->
+  <div class="logo">FacultyLens</div>
+
+  <!-- Sign Up Card -->
+  <div class="signup-box">
+    <h2>Create Account</h2>
+    <p class="subtitle">
+      Join <strong>FacultyLens</strong> — Your voice defines excellence.
+    </p>
+
+    <div class="input-group">
+      <label for="fullname">Full Name</label>
+      <input type="text" id="fullname" placeholder="Enter your full name">
+    </div>
+
+    <div class="input-group">
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="Enter your email">
+    </div>
+
+    <div class="input-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Create a password">
+      <div id="strengthIndicator"></div>
+    </div>
+
+    <div class="input-group">
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" placeholder="Confirm your password">
+    </div>
+
+    <div class="input-group">
+      <label for="role">Role</label>
+      <select id="role">
+        <option value="" disabled selected>Select your role</option>
+        <option value="student">Student</option>
+        <option value="faculty">Faculty</option>
+        <option value="admin">Admin</option>
+        <option value="hod">Head of Department</option>
+      </select>
+    </div>
+
+    <button id="signupBtn">Create Account</button>
+
+    <p id="msg"></p>
+
+    <div class="login-link">
+      Already have an account? <a href="index.html">Log in</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const fullname   = document.getElementById("fullname");
+      const email      = document.getElementById("email");
+      const pw         = document.getElementById("password");
+      const confirmPw  = document.getElementById("confirmPassword");
+      const role       = document.getElementById("role");
+      const btn        = document.getElementById("signupBtn");
+      const msg        = document.getElementById("msg");
+      const strength   = document.getElementById("strengthIndicator");
+
+      // Password strength indicator
+      pw.addEventListener("input", () => {
+        const v = pw.value;
+        if (v.length === 0) {
+          strength.textContent = "";
+          strength.className = "";
+        } else if (v.length < 6) {
+          strength.textContent = "Weak password";
+          strength.className = "strength weak";
+        } else if (/[A-Z]/.test(v) && /\d/.test(v) && v.length >= 8) {
+          strength.textContent = "Strong password";
+          strength.className = "strength strong";
+        } else {
+          strength.textContent = "Medium password";
+          strength.className = "strength medium";
+        }
+      });
+
+      btn.addEventListener("click", async () => {
+        msg.textContent = "";
+        msg.className = "";
+
+        // Validation
+        if (!fullname.value.trim() || !email.value.trim() || !pw.value || !role.value) {
+          showMsg("Please fill all fields", "error");
+          return;
+        }
+
+        if (pw.value.length < 6) {
+          showMsg("Password must be at least 6 characters", "error");
+          return;
+        }
+
+        if (pw.value !== confirmPw.value) {
+          showMsg("Passwords do not match", "error");
+          return;
+        }
+
+        btn.textContent = "Creating account...";
+        btn.classList.add("loading");
+
+        try {
+          const res = await fetch("../API/register.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              name:     fullname.value.trim(),
+              email:    email.value.trim(),
+              password: pw.value,
+              role:     role.value
+            })
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            showMsg("Account created! Redirecting to login...", "success");
+            setTimeout(() => {
+              window.location.href = "index.html";
+            }, 1500);
+          } else {
+            showMsg(data.message || "Registration failed", "error");
+            btn.textContent = "Create Account";
+            btn.classList.remove("loading");
+          }
+        } catch (err) {
+          showMsg("Server error — please try again", "error");
+          btn.textContent = "Create Account";
+          btn.classList.remove("loading");
+        }
+      });
+
+      function showMsg(text, type) {
+        msg.textContent = text;
+        msg.className = type === "success" ? "msg-success" : "msg-error";
+      }
+    });
+  </script>
+</body>
+</html>

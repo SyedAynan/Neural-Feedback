@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FacultyLens Dashboard</title>
+  <meta name="description" content="FacultyLens Dashboard — View ratings, feedback trends, and faculty performance analytics.">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #0a0a0f;
+      color: #eaeaea;
+      overflow-x: hidden;
+    }
+
+    /* Glow Background */
+    .glow-bg {
+      position: fixed;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(140, 70, 255, 0.55), transparent);
+      top: -150px;
+      right: -120px;
+      filter: blur(150px);
+      z-index: -1;
+      animation: floatGlow 12s infinite alternate ease-in-out;
+    }
+
+    .glow-bg-2 {
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(94, 199, 255, 0.2), transparent);
+      bottom: -200px;
+      left: -100px;
+      filter: blur(140px);
+      z-index: -1;
+      animation: floatGlow 16s infinite alternate ease-in-out;
+    }
+
+    @keyframes floatGlow {
+      from {
+        transform: translate(0, 0);
+      }
+
+      to {
+        transform: translate(-120px, 80px);
+      }
+    }
+
+    /* Glass Effect */
+    .glass {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 0 22px rgba(140, 80, 255, 0.25);
+      transition: all 0.3s ease;
+    }
+
+    .glass:hover {
+      border-color: rgba(180, 140, 255, 0.45);
+      transform: translateY(-4px);
+      box-shadow: 0 0 30px rgba(160, 120, 255, 0.45);
+    }
+
+    .nav-hover:hover {
+      color: #d5b4ff;
+      text-shadow: 0 0 10px rgba(180, 140, 255, 0.8);
+    }
+
+    .hover-card:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Charts */
+    .bar {
+      background: linear-gradient(180deg, #c084fc, #7e22ce);
+    }
+
+    .bar:hover {
+      background: linear-gradient(180deg, #e9c2ff, #a855f7);
+    }
+
+    .line-chart circle {
+      fill: #c084fc;
+    }
+
+    .line-chart circle:hover {
+      fill: #f0abfc;
+    }
+
+    /* Mobile nav toggle */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: #d5b4ff;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn { display: block; }
+      .nav-links { display: none !important; }
+      .nav-links.active { display: flex !important; flex-direction: column; position: absolute; top: 70px; left: 0; right: 0; background: rgba(10,10,15,0.95); padding: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Glow -->
+  <div class="glow-bg"></div>
+  <div class="glow-bg-2"></div>
+
+  <!-- NAVBAR -->
+  <nav class="glass fixed top-0 w-full z-50 px-10 py-4 flex items-center" aria-label="Main Navigation">
+
+    <h1 class="text-3xl font-bold text-purple-300 tracking-wide">
+      FacultyLens
+    </h1>
+
+    <button class="mobile-menu-btn ml-auto mr-4" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+
+    <ul class="nav-links hidden md:flex space-x-10 text-lg ml-auto mr-6" id="navLinks">
+      <li><a href="dashboard.html" class="nav-hover transition">Dashboard</a></li>
+      <li><a href="Faculties/faculties.html" class="nav-hover transition">Faculty</a></li>
+      <li><a href="essentials/feedback.html" class="nav-hover transition">Feedback</a></li>
+      <li><a href="essentials/report.html" class="nav-hover transition">Reports</a></li>
+      <li><a href="essentials/admin.html" class="nav-hover transition">Admin</a></li>
+    </ul>
+
+    <button id="logoutBtn"
+      class="bg-purple-600 hover:bg-purple-700 px-5 py-2.5 rounded-xl shadow-lg text-white font-semibold transition">
+      Log Out
+    </button>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="pt-[96px] px-8 max-w-7xl mx-auto">
+
+    <!-- Welcome Banner -->
+    <section class="glass p-6 rounded-2xl mb-8 text-center">
+      <h2 class="text-2xl font-bold text-purple-300" id="welcomeMsg">Welcome back! 👋</h2>
+      <p class="text-gray-400 mt-1">Department of Data Science Engineering — Feedback Analytics</p>
+    </section>
+
+    <!-- Feature Tags -->
+    <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
+      <div class="glass p-3 rounded-xl text-center text-sm hover-card cursor-pointer">🔒 Anonymous</div>
+      <div class="glass p-3 rounded-xl text-center text-sm hover-card cursor-pointer">📝 Question Types</div>
+      <div class="glass p-3 rounded-xl text-center text-sm hover-card cursor-pointer">🔗 Auto-Mapping</div>
+      <div class="glass p-3 rounded-xl text-center text-sm hover-card cursor-pointer">✔ One-Time</div>
+      <div class="glass p-3 rounded-xl text-center text-sm hover-card cursor-pointer">⏳ Window</div>
+      <div class="glass p-3 rounded-xl text-center text-sm hover-card cursor-pointer">📊 Real-Time</div>
+    </section>
+
+    <!-- Stats Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div class="glass p-6 rounded-2xl hover-card cursor-pointer">
+        <h3 class="text-gray-300">Avg Rating</h3>
+        <p class="text-4xl font-bold text-purple-400 mt-2" id="avgRating">4.3</p>
+      </div>
+
+      <div class="glass p-6 rounded-2xl hover-card cursor-pointer">
+        <h3 class="text-gray-300">Feedback Count</h3>
+        <p class="text-4xl font-bold text-purple-400 mt-2" id="feedbackCount">1,245</p>
+      </div>
+
+      <div class="glass p-6 rounded-2xl hover-card cursor-pointer">
+        <h3 class="text-gray-300">Lectures Evaluated</h3>
+        <p class="text-4xl font-bold text-purple-400 mt-2">57</p>
+      </div>
+
+      <div class="glass p-6 rounded-2xl hover-card cursor-pointer">
+        <h3 class="text-gray-300">Top Faculty</h3>
+        <p class="text-xl font-bold text-green-400 mt-2">Dr. Adarsh M J</p>
+      </div>
+    </section>
+
+    <!-- Charts -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10">
+
+      <!-- Bar Chart -->
+      <div class="glass p-6 rounded-2xl hover-card">
+        <h2 class="text-xl font-semibold mb-4">Rating Distribution</h2>
+
+        <div class="flex items-end gap-3 h-44 pb-2">
+          <div class="flex flex-col items-center flex-1">
+            <div class="bar h-1/4 w-9 rounded-t-lg transition-all duration-500"></div>
+            <span class="text-gray-400 text-xs mt-2">1★</span>
+          </div>
+          <div class="flex flex-col items-center flex-1">
+            <div class="bar h-2/5 w-9 rounded-t-lg transition-all duration-500"></div>
+            <span class="text-gray-400 text-xs mt-2">2★</span>
+          </div>
+          <div class="flex flex-col items-center flex-1">
+            <div class="bar h-3/5 w-9 rounded-t-lg transition-all duration-500"></div>
+            <span class="text-gray-400 text-xs mt-2">3★</span>
+          </div>
+          <div class="flex flex-col items-center flex-1">
+            <div class="bar h-4/5 w-9 rounded-t-lg transition-all duration-500"></div>
+            <span class="text-gray-400 text-xs mt-2">4★</span>
+          </div>
+          <div class="flex flex-col items-center flex-1">
+            <div class="bar h-[70%] w-9 rounded-t-lg transition-all duration-500"></div>
+            <span class="text-gray-400 text-xs mt-2">5★</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Line Chart -->
+      <div class="glass p-6 rounded-2xl hover-card">
+        <h2 class="text-xl font-semibold mb-4">Feedback Trend</h2>
+
+        <svg viewBox="0 0 300 150" class="w-full h-40 line-chart" role="img"
+          aria-label="Feedback trend line chart">
+          <!-- Gradient fill under the line -->
+          <defs>
+            <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#c084fc" stop-opacity="0.3"/>
+              <stop offset="100%" stop-color="#c084fc" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <polygon fill="url(#lineGrad)"
+            points="10,120 60,90 110,110 160,70 210,90 260,40 260,150 10,150" />
+          <polyline fill="none" stroke="#c084fc" stroke-width="3"
+            points="10,120 60,90 110,110 160,70 210,90 260,40" />
+          <circle cx="10" cy="120" r="5" />
+          <circle cx="60" cy="90" r="5" />
+          <circle cx="110" cy="110" r="5" />
+          <circle cx="160" cy="70" r="5" />
+          <circle cx="210" cy="90" r="5" />
+          <circle cx="260" cy="40" r="5" />
+        </svg>
+
+        <div class="flex justify-between text-gray-400 text-sm mt-2">
+          <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Feature Panels -->
+    <section class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
+
+      <div class="glass p-6 rounded-2xl hover-card">
+        <h2 class="text-xl font-semibold mb-2">🧑‍🎓 Student Features</h2>
+        <ul class="text-gray-300 space-y-2">
+          <li>• Mobile-first UI</li>
+          <li>• Save & Resume</li>
+          <li>• Multilingual Support</li>
+          <li>• Simple Feedback Flow</li>
+        </ul>
+      </div>
+
+      <div class="glass p-6 rounded-2xl hover-card">
+        <h2 class="text-xl font-semibold mb-2">👨‍🏫 Faculty Features</h2>
+        <ul class="text-gray-300 space-y-2">
+          <li>• View Reports After Release</li>
+          <li>• Semester Comparison</li>
+          <li>• Sentiment Analysis</li>
+          <li>• Export PDF/Excel</li>
+        </ul>
+      </div>
+
+      <div class="glass p-6 rounded-2xl hover-card">
+        <h2 class="text-xl font-semibold mb-2">🏛 Admin / HoD</h2>
+        <ul class="text-gray-300 space-y-2">
+          <li>• Auto Mapping System</li>
+          <li>• Low Score Alerts</li>
+          <li>• Bulk Report Downloads</li>
+          <li>• Abuse Filtering</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- Recent Comments -->
+    <section class="glass p-6 rounded-2xl mt-10 mb-10 hover-card">
+      <h2 class="text-xl font-semibold mb-4">Recent Comments</h2>
+
+      <div class="border-b border-gray-700 pb-4 mb-4">
+        <p>"The lectures were highly engaging!"</p>
+        <span class="text-green-400 text-sm">● Positive</span>
+      </div>
+
+      <div class="border-b border-gray-700 pb-4 mb-4">
+        <p>"Assignments are too lengthy."</p>
+        <span class="text-yellow-400 text-sm">● Neutral</span>
+      </div>
+
+      <div>
+        <p>"Needs improvement in communication."</p>
+        <span class="text-red-400 text-sm">● Negative</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 text-gray-500 text-sm border-t border-gray-800">
+    © 2025 FacultyLens — Department of Data Science Engineering
+  </footer>
+
+  <!-- JS -->
+  <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <title>Faculty – Data Science Engineering</title>
+
+  <style>
+    * {
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: #0a0a0f;
+      color: #eaeaea;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated glowing theme background */
+    .glow-bg {
+      position: fixed;
+      width: 600px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(140, 70, 255, 0.6), rgba(0, 0, 0, 0));
+      top: -160px;
+      right: -160px;
+      filter: blur(150px);
+      z-index: -1;
+      animation: floatGlow 12s infinite alternate ease-in-out;
+    }
+
+    @keyframes floatGlow {
+      from {
+        transform: translate(0, 0);
+      }
+
+      to {
+        transform: translate(-80px, 70px);
+      }
+    }
+
+    /* Replacing your previous .glass style with Elite Theme Style */
+    .glass {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 0 25px rgba(160, 120, 255, 0.25);
+      transition: 0.35s ease;
+    }
+
+    .glass:hover {
+      transform: translateY(-6px) scale(1.03);
+      border-color: rgba(170, 130, 255, 0.45);
+      box-shadow: 0 0 35px rgba(160, 120, 255, 0.45);
+    }
+
+    nav {
+      backdrop-filter: blur(20px) !important;
+      box-shadow: 0 0 25px rgba(160, 120, 255, 0.25) !important;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    /* Card text improvement */
+    .faculty-name {
+      color: #d8caff;
+      text-shadow: 0 0 12px rgba(170, 130, 255, 0.4);
+    }
+
+    .faculty-role {
+      color: #cdb8ff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="glow-bg"></div>
+
+  <!-- NAV BAR -->
+  <nav class="glass w-full px-10 py-4 flex justify-between items-center fixed top-0 z-50">
+    <h1 class="text-3xl font-bold text-purple-300 tracking-wide">
+      FacultyLens
+    </h1>
+
+    <div class="flex gap-10 items-center text-lg">
+      <a href="../dashboard.html" class="hover:text-purple-300 transition">Dashboard</a>
+      <a href="faculties.html" class="hover:text-purple-300 transition">Faculty</a>
+      <a href="../essentials/report.html" class="hover:text-purple-300 transition">Reports</a>
+
+      <button class="bg-gradient-to-r from-purple-600 to-purple-800 px-6 py-2.5 rounded-xl shadow-lg text-white font-semibold hover:scale-105 transition">
+        <a href="../index.html" style="color:inherit;text-decoration:none;"> Log Out </a>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <div class="pt-32 px-8 max-w-7xl mx-auto">
+
+    <h1 class="text-4xl font-bold text-purple-300 mb-12 text-center drop-shadow-lg">
+      Department of Data Science Engineering
+    </h1>
+
+    <h2 class="text-3xl font-semibold text-purple-200 mb-6">
+      Faculty Members
+    </h2>
+
+    <!-- FACULTY GRID -->
+    <div id="facultyGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+
+      <!-- HOD -->
+      <a href="hod dashboard.html" class="glass p-6 rounded-2xl text-center block">
+        <img src="hod-3d.png" class="w-32 h-32 mx-auto rounded-full border border-purple-400 shadow-xl mb-4">
+        <h3 class="text-xl font-bold faculty-name">Senior Prof,Dr. Adarsh M J</h3>
+        <p class="faculty-role font-semibold">Head of Department</p>
+        <p class="text-gray-300 mt-2 text-sm">Machine Learning, Deep laerning, Big Data Anaysis</p>
+        <p class="text-gray-400 text-sm">hod.dse@college.edu</p>
+      </a>
+
+      <!-- Branch Coordinator -->
+      <a href="GAGANA_MAM.html" class="glass p-6 rounded-2xl text-center block">
+        <img src="GAGANA 3d.png" class="w-32 h-32 mx-auto rounded-full border border-purple-400 shadow-xl mb-4">
+        <h3 class="text-xl font-bold faculty-name">Prof.Gagana Deepa J</h3>
+        <p class="faculty-role font-semibold">Branch Coordinator</p>
+        <p class="text-gray-300 mt-2 text-sm">Data Analytics,Cloud Infrastructure(AWS),<br>Big Data Analytics</p>
+        <p class="text-gray-400 text-sm">gagana_deepa@college.edu</p>
+      </a>
+
+      <!-- Mathematics Faculty -->
+      <a href="sri_sir.html" class="glass p-6 rounded-2xl text-center block">
+        <img src="shrikanth 3d.png" class="w-32 h-32 mx-auto rounded-full border border-purple-400 shadow-xl mb-4">
+        <h3 class="text-xl font-bold faculty-name">Prof.Srikanth A S</h3>
+        <p class="faculty-role font-semibold">Mathematics Faculty</p>
+        <p class="text-gray-300 mt-2 text-sm">Engineering Mathematics</p>
+        <p class="text-gray-400 text-sm">aiml@aitckm.in</p>
+      </a>
+
+      <!-- DS Faculty -->
+      <a href="harshita_mam.html" class="glass p-6 rounded-2xl text-center block">
+        <img src="harsita 3d.png" class="w-32 h-32 mx-auto rounded-full border border-purple-400 shadow-xl mb-4">
+        <h3 class="text-xl font-bold faculty-name">Prof.Harshitha H D</h3>
+        <p class="faculty-role font-semibold">Data Structures Faculty</p>
+        <p class="text-gray-300 mt-2 text-sm">Algorithms & DS, Data Analyst and Customer Management</p>
+        <p class="text-gray-400 text-sm">harshithahd@gmail.com</p>
+      </a>
+
+      <!-- DDCO Faculty -->
+      <a href="shalini_mam.html" class="glass p-6 rounded-2xl text-center block">
+        <img src="SHALINI 3d.png" class="w-32 h-32 mx-auto rounded-full border border-purple-400 shadow-xl mb-4">
+        <h3 class="text-xl font-bold faculty-name">Prof.Shalini I.S</h3>
+        <p class="faculty-role font-semibold">DDCO Faculty</p>
+        <p class="text-gray-300 mt-2 text-sm">Digital Electronics,Logic Design, Control Engineering, Optical fiber Communication,Network Security,</p>
+        <p class="text-gray-400 text-sm">shalinis@gmail.com</p>
+      </a>
+
+      <!-- OS Faculty -->
+      <a href="OS_mam.html" class="glass p-6 rounded-2xl text-center block">
+        <img src="os3d.png" class="w-32 h-32 mx-auto rounded-full border border-purple-400 shadow-xl mb-4">
+        <h3 class="text-xl font-bold faculty-name">Dr thayaba Nausheen A</h3>
+        <p class="faculty-role font-semibold">Operating System Faculty</p>
+        <p class="text-gray-300 mt-2 text-sm">System Design & OS</p>
+        <p class="text-gray-400 text-sm">thayaba.os@college.edu</p>
+      </a>
+
+      <!-- Python Faculty -->
+      <a href="Ramya_mam.html" class="glass p-6 rounded-2xl text-center block">
+        <img src="ramya3d.png" class="w-32 h-32 mx-auto rounded-full border border-purple-400 shadow-xl mb-4">
+        <h3 class="text-xl font-bold faculty-name">Prof. Ramya C K</h3>
+        <p class="faculty-role font-semibold">Python Faculty</p>
+        <p class="text-gray-300 mt-2 text-sm">Python, AI</p>
+        <p class="text-gray-400 text-sm">ramyack.py@college.edu</p>
+      </a>
+
+      <!-- PHP Faculty -->
+      <a href="Pallavi_mam.html" class="glass p-6 rounded-2xl text-center block">
+        <img src="PALLAVI 3d.png" class="w-32 h-32 mx-auto rounded-full border border-purple-400 shadow-xl mb-4">
+        <h3 class="text-xl font-bold faculty-name">Prof.Pallavi C.S</h3>
+        <p class="faculty-role font-semibold">PHP Faculty</p>
+        <p class="text-gray-300 mt-2 text-sm">Web Development</p>
+        <p class="text-gray-400 text-sm">pallavi.php@college.edu</p>
+      </a>
+
+      <!-- SCR Faculty -->
+      <a href="seema_mam.html" class="glass p-6 rounded-2xl text-center block">
+        <img src="seema3d.png" class="w-32 h-32 mx-auto rounded-full border border-purple-400 shadow-xl mb-4">
+        <h3 class="text-xl font-bold faculty-name">Prof. Seema B S </h3>
+        <p class="faculty-role font-semibold">SCR Activity Faculty</p>
+        <p class="text-gray-300 mt-2 text-sm">Social Connect and Responsibility,Student Relations</p>
+        <p class="text-gray-400 text-sm">seema.scr@college.edu</p>
+      </a>
+
+    </div>
+  </div>
+
+</body>
+
+</html>

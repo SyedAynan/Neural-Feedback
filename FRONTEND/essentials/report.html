@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>My Feedback History — Student</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-1:#0b0b12; --bg-2:#151526;
+  --muted:#bfc3e6;
+  --accent-1:#9b6bff; --accent-2:#5ec7ff; --accent-3:#7be28a;
+  --glass: rgba(255,255,255,0.06);
+  --glass-border: rgba(255,255,255,0.10);
+  --card-radius:16px; --maxw:1200px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; padding:36px 20px 80px;
+  font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+  background: linear-gradient(180deg,var(--bg-1),var(--bg-2));
+  color:#e9e9ff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100vh;
+  line-height:1.35;
+}
+
+/* Background glows */
+.bg-layers{position:fixed; inset:0; z-index:-2; overflow:hidden}
+.glow{position:absolute; width:700px; height:700px; border-radius:50%; filter:blur(120px); opacity:0.9; mix-blend-mode:screen}
+.glow.purple{ background: radial-gradient(circle at 30% 30%, rgba(155,107,255,0.55), rgba(155,107,255,0)); top:-200px; right:-160px; animation: float 12s ease-in-out infinite alternate; }
+.glow.cyan{ background: radial-gradient(circle at 70% 70%, rgba(94,199,255,0.28), rgba(94,199,255,0)); top:120px; left:-220px; animation: float 16s ease-in-out infinite alternate; }
+@keyframes float { from{transform:translateY(0)} to{transform:translateY(-60px) translateX(40px)} }
+
+.wrap{ max-width:var(--maxw); margin:0 auto; }
+
+/* Header */
+header{ display:flex; flex-direction:column; gap:12px; margin-bottom:22px; align-items:flex-start }
+.top-row{ display:flex; align-items:center; justify-content:space-between; width:100%; gap:16px }
+.brand{ display:flex; gap:14px; align-items:center }
+.logo{
+  width:64px; height:64px; border-radius:12px;
+  background:linear-gradient(135deg,var(--accent-1), #6c3bff 60%, var(--accent-2));
+  display:grid; place-items:center; font-weight:800; color:white; font-size:20px;
+  box-shadow:0 10px 36px rgba(123,82,255,0.18); border:1px solid rgba(255,255,255,0.06);
+}
+h1{font-size:22px; margin:0; color:#efe9ff}
+p.lead{ margin:0; color:var(--muted); font-size:13px }
+
+/* Summary & stats */
+.top-summary{
+  display:grid;
+  grid-template-columns: 1fr 360px;
+  gap:18px;
+  margin-top:12px;
+}
+@media (max-width:980px){ .top-summary{ grid-template-columns: 1fr } }
+
+.summary-left{
+  display:grid;
+  gap:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04);
+  padding:18px; border-radius:12px; backdrop-filter: blur(8px);
+}
+.summary-cards{
+  display:grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap:12px;
+}
+.card-stat{
+  padding:14px; border-radius:12px; background:var(--glass); border:1px solid var(--glass-border); display:flex; gap:12px; align-items:center;
+}
+.card-stat .icon{ width:48px; height:48px; display:grid; place-items:center; border-radius:10px; background:linear-gradient(135deg,#ffffff11,#00000011); border:1px solid rgba(255,255,255,0.04) }
+.card-stat .text{ font-size:13px; color:var(--muted) }
+.card-stat .num{ font-size:20px; font-weight:800; color:#efe9ff }
+
+/* right summary */
+.summary-right{
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04); padding:16px; border-radius:12px; backdrop-filter: blur(8px);
+}
+.big-num{ font-size:36px; font-weight:800; color:#fff }
+.small-muted{ color:var(--muted); font-size:13px }
+
+/* history list */
+.history-list{ margin-top:22px; display:grid; gap:18px }
+
+/* feedback entry card */
+.entry{
+  display:grid;
+  grid-template-columns: 84px 1fr 220px;
+  gap:16px;
+  padding:16px; border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.06); box-shadow:0 8px 26px rgba(0,0,0,0.28); backdrop-filter: blur(8px);
+  transition: transform .28s ease, box-shadow .28s ease, border-color .28s;
+}
+@media (max-width:920px){ .entry{ grid-template-columns: 72px 1fr; } .entry .right-col{ display:none } }
+.entry:hover{ transform: translateY(-6px); box-shadow:0 26px 70px rgba(80,55,200,0.12); border-color: rgba(170,130,255,0.26) }
+
+.avatar-small{ width:84px; height:84px; border-radius:12px; overflow:hidden; border:2px solid rgba(255,255,255,0.06) }
+.avatar-small img{ width:100%; height:100%; object-fit:cover }
+
+/* entry main */
+.entry-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px }
+.entry-info{ display:flex; gap:12px; flex-direction:column }
+.name{ font-weight:800; font-size:16px; color:#f6f0ff }
+.subject{ font-size:13px; color:var(--muted) }
+
+.meta-row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap }
+.badge{ padding:6px 10px; border-radius:999px; font-weight:700; font-size:12px; color:#fff; background:linear-gradient(90deg,#6e4bff 0%, #8ea8ff 100%); box-shadow:0 6px 20px rgba(110,70,255,0.12) }
+
+/* ratings */
+.ratings{ margin-top:10px; display:grid; gap:10px }
+.metric-line{ margin-bottom:6px }
+.metric-label{ display:flex; justify-content:space-between; font-size:13px; color:var(--muted); margin-bottom:6px }
+.progress{ height:12px; background:linear-gradient(180deg,#0f1024,#19192f); border-radius:8px; overflow:hidden; border:1px solid rgba(255,255,255,0.03) }
+.progress .fill{ height:100%; width:var(--w,60%); background: linear-gradient(90deg,var(--accent-1), #b7a2ff); transition: width .9s cubic-bezier(.2,.9,.3,1); position:relative }
+.progress .fill::after{ content:''; position:absolute; inset:0; width:40%; left:-30%; background:linear-gradient(90deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03), rgba(255,255,255,0.12)); transform:skewX(-18deg); animation: shine 2.4s linear infinite; opacity:0.5 }
+@keyframes shine{ from{left:-40%} to{left:120%} }
+
+/* comments */
+.comment{ margin-top:10px; background: rgba(255,255,255,0.03); border-radius:10px; padding:10px; color:#e9e9ff; font-size:14px; border:1px solid rgba(255,255,255,0.03) }
+
+/* right column (date + small trend) */
+.right-col{ display:flex; flex-direction:column; gap:10px; align-items:flex-end; justify-content:flex-start }
+.date{ font-size:13px; color:var(--muted) }
+.trend-small{ width:180px; padding:8px; border-radius:8px; background:linear-gradient(180deg,#080816,#111124); border:1px solid rgba(255,255,255,0.03) }
+.trend-small .bars{ display:flex; gap:6px; align-items:end; height:46px }
+.trend-small .bars .b{ width:14%; border-radius:6px 6px 0 0; background: linear-gradient(180deg,#7f5cff,#b7a2ff) }
+
+/* footer CTA */
+.center-cta{ text-align:center; margin-top:28px }
+.cta{ padding:12px 18px; border-radius:12px; background:linear-gradient(90deg,var(--accent-1), #6f4bff); color:#fff; font-weight:700; border:none; cursor:pointer; box-shadow:0 14px 40px rgba(110,70,255,0.16) }
+
+/* responsive tweaks */
+@media (max-width:520px){
+  .logo{ width:52px; height:52px } body{ padding:20px } .avatar-small{ width:72px; height:72px } .summary-cards{ grid-template-columns:repeat(2,1fr) }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layers" aria-hidden="true">
+  <div class="glow purple"></div>
+  <div class="glow cyan"></div>
+</div>
+
+<div class="wrap" role="main">
+  <header>
+    <div class="top-row">
+      <div class="brand" aria-hidden="true">
+        <div class="logo">FL</div>
+        <div>
+          <h1>My Feedback History</h1>
+          <p class="lead">Personal record of feedback you submitted — detailed entries + stats and trends.</p>
+        </div>
+      </div>
+
+      <div class="controls" role="toolbar" aria-label="actions">
+        <button class="control-btn" style="padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);">Export</button>
+      </div>
+    </div>
+
+    <div class="history-note" style="color:var(--muted); font-size:13px">Snapshot date: <strong>Dec 06, 2025</strong></div>
+  </header>
+
+  <!-- top summary + right summary box -->
+  <section class="top-summary" aria-label="summary">
+    <div class="summary-left">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:16px;font-weight:800;color:#efe9ff">Student: (You)</div>
+          <div style="font-size:13px;color:var(--muted)">Viewed: My submitted feedback entries</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:13px;color:var(--muted)">Total entries</div>
+          <div style="font-size:28px;font-weight:800;color:#fff">8</div>
+        </div>
+      </div>
+
+      <div class="summary-cards" style="margin-top:12px">
+        <div class="card-stat">
+          <div class="icon">🧭</div>
+          <div>
+            <div class="text">Avg. Clarity</div>
+            <div class="num">90%</div>
+          </div>
+        </div>
+
+        <div class="card-stat">
+          <div class="icon">🎓</div>
+          <div>
+            <div class="text">Avg. Teaching Skill</div>
+            <div class="num">95%</div>
+          </div>
+        </div>
+
+        <div class="card-stat">
+          <div class="icon">🤝</div>
+          <div>
+            <div class="text">Avg. Engagement</div>
+            <div class="num">95%</div>
+          </div>
+        </div>
+
+        <div class="card-stat">
+          <div class="icon">🗂️</div>
+          <div>
+            <div class="text">Submitted</div>
+            <div class="num">8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <aside class="summary-right" aria-label="summary right">
+      <div class="small-muted">Overall score (visual)</div>
+      <div style="margin-top:8px"><span class="big-num">93%</span></div>
+      <div style="margin-top:8px;color:var(--muted);font-size:13px">Combined average across clarity, teaching skill and engagement.</div>
+
+      <div style="margin-top:14px">
+        <div style="font-weight:700;color:#efe9ff;margin-bottom:8px">Recent activity</div>
+        <div style="display:flex;gap:8px">
+          <div style="flex:1">
+            <div style="font-size:12px;color:var(--muted)">This month</div>
+            <div style="font-weight:800;color:#fff">6</div>
+          </div>
+          <div style="flex:1">
+            <div style="font-size:12px;color:var(--muted)">Last month</div>
+            <div style="font-weight:800;color:#fff">2</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- history list -->
+  <section class="history-list" aria-label="feedback entries">
+
+    <!-- Entry 1 -->
+    <article class="entry" aria-label="Feedback to Gagana Deepa J">
+      <div class="avatar-small"><img src="../Faculties/GAGANA 3d.png" alt="Gagana Deepa J"></div>
+
+      <div>
+        <div class="entry-head">
+          <div class="entry-info">
+            <div class="name">Gagana Deepa J</div>
+            <div class="subject">Operating System — <span style="color:var(--muted)">Submitted: Dec 06, 2025 • 10:02 PM</span></div>
+            <div class="meta-row" style="margin-top:8px">
+              <div class="badge">Clarity: 9/10</div>
+              <div class="badge">Teaching: Excellent</div>
+              <div class="badge">Engagement: 9.5/10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ratings">
+          <div class="metric-line">
+            <div class="metric-label"><span>Clarity</span><span>9 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:90%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Teaching Skill</span><span>Excellent</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Student Engagement</span><span>9.5 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="comment" aria-label="comment">Comment: Very clear explanations of OS concepts and excellent use of diagrams — helped me understand process scheduling well.</div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="date">Dec 06, 2025<br><span style="color:var(--muted);font-size:12px">10:02 PM</span></div>
+        <div class="trend-small" style="margin-top:8px">
+          <div class="small-muted" style="font-size:12px">Recent</div>
+          <div class="bars" style="margin-top:6px">
+            <div class="b" style="height:86%"></div>
+            <div class="b" style="height:90%"></div>
+            <div class="b" style="height:92%"></div>
+            <div class="b" style="height:94%"></div>
+            <div class="b" style="height:95%"></div>
+            <div class="b" style="height:92%"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Entry 2 -->
+    <article class="entry" aria-label="Feedback to Srikanth A S">
+      <div class="avatar-small"><img src="../Faculties/shrikanth 3d.png" alt="Srikanth A S"></div>
+
+      <div>
+        <div class="entry-head">
+          <div class="entry-info">
+            <div class="name">Srikanth A S</div>
+            <div class="subject">Mathematics — <span style="color:var(--muted)">Submitted: Dec 06, 2025 • 10:03 PM</span></div>
+            <div class="meta-row" style="margin-top:8px">
+              <div class="badge">Clarity: 9/10</div>
+              <div class="badge">Teaching: Excellent</div>
+              <div class="badge">Engagement: 9.5/10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ratings">
+          <div class="metric-line">
+            <div class="metric-label"><span>Clarity</span><span>9 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:90%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Teaching Skill</span><span>Excellent</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Student Engagement</span><span>9.5 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="comment">Comment: Strong conceptual depth and clear problem walkthroughs during lectures. Very helpful in exam prep.</div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="date">Dec 06, 2025<br><span style="color:var(--muted);font-size:12px">10:03 PM</span></div>
+        <div class="trend-small">
+          <div class="small-muted" style="font-size:12px">Recent</div>
+          <div class="bars" style="margin-top:6px">
+            <div class="b" style="height:88%"></div>
+            <div class="b" style="height:90%"></div>
+            <div class="b" style="height:90%"></div>
+            <div class="b" style="height:92%"></div>
+            <div class="b" style="height:95%"></div>
+            <div class="b" style="height:94%"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Entry 3 -->
+    <article class="entry" aria-label="Feedback to Harshitha H D">
+      <div class="avatar-small"><img src="../Faculties/harsita 3d.png" alt="Harshitha H D"></div>
+
+      <div>
+        <div class="entry-head">
+          <div class="entry-info">
+            <div class="name">Harshitha H D</div>
+            <div class="subject">Data Structure — <span style="color:var(--muted)">Submitted: Dec 06, 2025 • 10:04 PM</span></div>
+            <div class="meta-row" style="margin-top:8px">
+              <div class="badge">Clarity: 9/10</div>
+              <div class="badge">Teaching: Excellent</div>
+              <div class="badge">Engagement: 9.5/10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ratings">
+          <div class="metric-line">
+            <div class="metric-label"><span>Clarity</span><span>9 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:90%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Teaching Skill</span><span>Excellent</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Student Engagement</span><span>9.5 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="comment">Comment: Explanations were concise and examples were practical — especially liked the coding walkthroughs.</div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="date">Dec 06, 2025<br><span style="color:var(--muted);font-size:12px">10:04 PM</span></div>
+        <div class="trend-small">
+          <div class="small-muted" style="font-size:12px">Recent</div>
+          <div class="bars" style="margin-top:6px">
+            <div class="b" style="height:85%"></div>
+            <div class="b" style="height:89%"></div>
+            <div class="b" style="height:90%"></div>
+            <div class="b" style="height:92%"></div>
+            <div class="b" style="height:95%"></div>
+            <div class="b" style="height:93%"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Entry 4 -->
+    <article class="entry" aria-label="Feedback to Shalini I.S">
+      <div class="avatar-small"><img src="../Faculties/SHALINI 3d.png" alt="Shalini I.S"></div>
+
+      <div>
+        <div class="entry-head">
+          <div class="entry-info">
+            <div class="name">Shalini I.S</div>
+            <div class="subject">Digital Design & Computer Org — <span style="color:var(--muted)">Submitted: Dec 06, 2025 • 10:05 PM</span></div>
+            <div class="meta-row" style="margin-top:8px">
+              <div class="badge">Clarity: 9/10</div>
+              <div class="badge">Teaching: Excellent</div>
+              <div class="badge">Engagement: 9.5/10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ratings">
+          <div class="metric-line">
+            <div class="metric-label"><span>Clarity</span><span>9 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:90%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Teaching Skill</span><span>Excellent</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Student Engagement</span><span>9.5 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="comment">Comment: Great balance of theory and labs. Assignments helped apply concepts effectively.</div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="date">Dec 06, 2025<br><span style="color:var(--muted);font-size:12px">10:05 PM</span></div>
+        <div class="trend-small">
+          <div class="small-muted" style="font-size:12px">Recent</div>
+          <div class="bars" style="margin-top:6px">
+            <div class="b" style="height:88%"></div>
+            <div class="b" style="height:90%"></div>
+            <div class="b" style="height:91%"></div>
+            <div class="b" style="height:92%"></div>
+            <div class="b" style="height:95%"></div>
+            <div class="b" style="height:94%"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Entry 5 -->
+    <article class="entry" aria-label="Feedback to Dr thayaba Nausheen A">
+      <div class="avatar-small"><img src="../Faculties/os3d.png" alt="Dr thayaba Nausheen A"></div>
+
+      <div>
+        <div class="entry-head">
+          <div class="entry-info">
+            <div class="name">Dr thayaba Nausheen A</div>
+            <div class="subject">Operating System — <span style="color:var(--muted)">Submitted: Dec 06, 2025 • 10:06 PM</span></div>
+            <div class="meta-row" style="margin-top:8px">
+              <div class="badge">Clarity: 9/10</div>
+              <div class="badge">Teaching: Excellent</div>
+              <div class="badge">Engagement: 9.5/10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ratings">
+          <div class="metric-line">
+            <div class="metric-label"><span>Clarity</span><span>9 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:90%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Teaching Skill</span><span>Excellent</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Student Engagement</span><span>9.5 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="comment">Comment: Very supportive during doubt-clearing sessions and offers useful examples from industry.</div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="date">Dec 06, 2025<br><span style="color:var(--muted);font-size:12px">10:06 PM</span></div>
+        <div class="trend-small">
+          <div class="small-muted" style="font-size:12px">Recent</div>
+          <div class="bars" style="margin-top:6px">
+            <div class="b" style="height:86%"></div>
+            <div class="b" style="height:90%"></div>
+            <div class="b" style="height:92%"></div>
+            <div class="b" style="height:93%"></div>
+            <div class="b" style="height:95%"></div>
+            <div class="b" style="height:94%"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Entry 6 -->
+    <article class="entry" aria-label="Feedback to Ramya C K">
+      <div class="avatar-small"><img src="../Faculties/ramya3d.png" alt="Ramya C K"></div>
+
+      <div>
+        <div class="entry-head">
+          <div class="entry-info">
+            <div class="name">Ramya C K</div>
+            <div class="subject">Python Programming — <span style="color:var(--muted)">Submitted: Dec 06, 2025 • 10:07 PM</span></div>
+            <div class="meta-row" style="margin-top:8px">
+              <div class="badge">Clarity: 9/10</div>
+              <div class="badge">Teaching: Excellent</div>
+              <div class="badge">Engagement: 9.5/10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ratings">
+          <div class="metric-line">
+            <div class="metric-label"><span>Clarity</span><span>9 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:90%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Teaching Skill</span><span>Excellent</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Student Engagement</span><span>9.5 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="comment">Comment: Interactive hands-on sessions and clear explanations of common pitfalls — great teaching approach.</div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="date">Dec 06, 2025<br><span style="color:var(--muted);font-size:12px">10:07 PM</span></div>
+        <div class="trend-small">
+          <div class="small-muted" style="font-size:12px">Recent</div>
+          <div class="bars" style="margin-top:6px">
+            <div class="b" style="height:87%"></div>
+            <div class="b" style="height:89%"></div>
+            <div class="b" style="height:91%"></div>
+            <div class="b" style="height:93%"></div>
+            <div class="b" style="height:95%"></div>
+            <div class="b" style="height:92%"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Entry 7 -->
+    <article class="entry" aria-label="Feedback to Pallavi C S">
+      <div class="avatar-small"><img src="../Faculties/PALLAVI 3d.png" alt="Pallavi C S"></div>
+
+      <div>
+        <div class="entry-head">
+          <div class="entry-info">
+            <div class="name">Pallavi C.S</div>
+            <div class="subject">PHP Programming — <span style="color:var(--muted)">Submitted: Dec 06, 2025 • 10:08 PM</span></div>
+            <div class="meta-row" style="margin-top:8px">
+              <div class="badge">Clarity: 9/10</div>
+              <div class="badge">Teaching: Excellent</div>
+              <div class="badge">Engagement: 9.5/10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ratings">
+          <div class="metric-line">
+            <div class="metric-label"><span>Clarity</span><span>9 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:90%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Teaching Skill</span><span>Excellent</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Student Engagement</span><span>9.5 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="comment">Comment: Well-structured lectures and prompt feedback on exercises — course flow was smooth.</div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="date">Dec 06, 2025<br><span style="color:var(--muted);font-size:12px">10:08 PM</span></div>
+        <div class="trend-small">
+          <div class="small-muted" style="font-size:12px">Recent</div>
+          <div class="bars" style="margin-top:6px">
+            <div class="b" style="height:86%"></div>
+            <div class="b" style="height:88%"></div>
+            <div class="b" style="height:90%"></div>
+            <div class="b" style="height:92%"></div>
+            <div class="b" style="height:95%"></div>
+            <div class="b" style="height:93%"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Entry 8 -->
+    <article class="entry" aria-label="Feedback to Seema">
+      <div class="avatar-small"><img src="../Faculties/seema3d.png" alt="Seema"></div>
+
+      <div>
+        <div class="entry-head">
+          <div class="entry-info">
+            <div class="name">Seema</div>
+            <div class="subject">Operating System — <span style="color:var(--muted)">Submitted: Dec 06, 2025 • 10:08 PM</span></div>
+            <div class="meta-row" style="margin-top:8px">
+              <div class="badge">Clarity: 9/10</div>
+              <div class="badge">Teaching: Excellent</div>
+              <div class="badge">Engagement: 9.5/10</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ratings">
+          <div class="metric-line">
+            <div class="metric-label"><span>Clarity</span><span>9 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:90%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Teaching Skill</span><span>Excellent</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="metric-line">
+            <div class="metric-label"><span>Student Engagement</span><span>9.5 / 10</span></div>
+            <div class="progress"><div class="fill" style="--w:95%"></div></div>
+          </div>
+
+          <div class="comment">Comment: Provides clear examples and hands-on tasks — sessions are engaging and well-paced.</div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="date">Dec 06, 2025<br><span style="color:var(--muted);font-size:12px">10:08 PM</span></div>
+        <div class="trend-small">
+          <div class="small-muted" style="font-size:12px">Recent</div>
+          <div class="bars" style="margin-top:6px">
+            <div class="b" style="height:86%"></div>
+            <div class="b" style="height:89%"></div>
+            <div class="b" style="height:91%"></div>
+            <div class="b" style="height:94%"></div>
+            <div class="b" style="height:95%"></div>
+            <div class="b" style="height:93%"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <div class="center-cta">
+    <button class="cta" aria-label="Back to dashboard">
+    <a href="../dashboard.html" style="text-decoration: none; color: inherit;">
+        Return to Dashboard
+    </a>
+</button>
+</div>
+
+</body>
+</html>

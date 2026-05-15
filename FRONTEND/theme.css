@@ -1,0 +1,240 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: #0a0a0f;
+  color: #fff;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* Glow */
+.glow-bg {
+  position: fixed;
+  width: 650px;
+  height: 650px;
+  background: radial-gradient(circle, rgba(140,70,255,0.6), transparent);
+  top: -150px;
+  right: -150px;
+  filter: blur(140px);
+  z-index: -1;
+}
+
+/* Logo */
+.logo {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: #d2c7ff;
+}
+
+/* Layout */
+.container {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+}
+
+/* Image */
+.teacher-img {
+  width: 300px;
+  border-radius: 16px;
+  border: 3px solid rgba(170,130,255,0.45);
+  box-shadow: 0 0 25px rgba(160,120,255,0.25);
+}
+
+/* Login Card */
+.login-box {
+  width: 360px;
+  padding: 36px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+  transition: all 0.3s ease;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 14px;
+  color: #d6c9ff;
+}
+
+.cool-msg {
+  text-align: center;
+  font-size: 14px;
+  margin-bottom: 22px;
+  color: #cdbbff;
+}
+
+/* Inputs */
+.input-group {
+  margin-bottom: 16px;
+  position: relative;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+input:hover {
+  border-color: #a57bff;
+}
+
+input:focus {
+  outline: none;
+  border-color: #b18cff;
+  box-shadow: 0 0 10px rgba(177,140,255,0.6);
+  background: rgba(255,255,255,0.1);
+}
+
+.eye-icon {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.eye-icon:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(0 0 6px #b18cff);
+}
+
+/* Options */
+.options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+/* Button */
+#loginBtn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #9b6bff, #6d2cff);
+  color: #fff;
+  font-size: 17px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#loginBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(155,107,255,0.6);
+}
+
+#loginBtn.loading {
+  background: #555;
+  pointer-events: none;
+}
+
+/* Divider */
+.divider {
+  text-align: center;
+  margin: 20px 0;
+  opacity: 0.7;
+}
+
+/* OAuth */
+.oauth-buttons {
+  display: flex;
+  gap: 14px;
+}
+
+.oauth {
+  flex: 1;
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.18);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.oauth:hover {
+  background: rgba(255,255,255,0.15);
+  box-shadow: 0 0 15px rgba(160,120,255,0.4);
+  transform: translateY(-2px);
+}
+
+/* Error */
+.error {
+  text-align: center;
+  color: #ff6b6b;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+/* Animations */
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.login-box.shake {
+  animation: shake 0.35s;
+}
+
+.strength {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.weak { color: #ff6b6b; }
+.medium { color: #feca57; }
+.strong { color: #1dd1a1; }
+
+.caps-warning {
+  font-size: 12px;
+  color: #feca57;
+  margin-top: 5px;
+}
+/* ================= OAuth Brand Hover Colors ================= */
+
+/* Google button hover */
+.oauth.google:hover {
+  background: linear-gradient(135deg, #12cc65, #05cafb);
+  box-shadow: 0 0 18px rgba(234, 67, 53, 0.7);
+  color: #fff;
+}
+
+/* Apple button hover */
+.oauth.apple:hover {
+  background: linear-gradient(135deg, #ffffff, #887070);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.7);
+  color: #000;
+}
+
+/* Smooth icon/text contrast */
+.oauth.apple:hover svg {
+  fill: #000;
+}

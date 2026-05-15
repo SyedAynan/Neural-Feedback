@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FacultyLens | Admin Panel</title>
+  <meta name="description" content="FacultyLens Admin — Manage users, view system logs, and configure feedback settings.">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="theme.css">
+
+  <style>
+    body {
+      height: auto;
+      overflow: auto;
+      padding: 0;
+    }
+
+    .admin-container {
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+
+    .admin-header {
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .admin-header h1 {
+      font-size: 36px;
+      color: #d6c9ff;
+      text-shadow: 0 0 14px rgba(160,120,255,0.5);
+      margin-bottom: 8px;
+    }
+
+    .admin-header p {
+      color: #bfb5e0;
+      font-size: 15px;
+    }
+
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .admin-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 28px;
+      backdrop-filter: blur(18px);
+      transition: all 0.3s ease;
+    }
+
+    .admin-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(180,140,255,0.45);
+      box-shadow: 0 0 30px rgba(160,120,255,0.35);
+    }
+
+    .admin-card h3 {
+      color: #d6c9ff;
+      font-size: 20px;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-card h3 .icon {
+      font-size: 24px;
+    }
+
+    .stat-value {
+      font-size: 36px;
+      font-weight: 700;
+      color: #c084fc;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      color: #bfb5e0;
+      font-size: 13px;
+    }
+
+    /* Table */
+    .admin-table-wrap {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 24px;
+      backdrop-filter: blur(18px);
+      overflow-x: auto;
+      margin-bottom: 32px;
+    }
+
+    .admin-table-wrap h3 {
+      color: #d6c9ff;
+      margin-bottom: 16px;
+      font-size: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      color: #bfb5e0;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    td {
+      padding: 12px 16px;
+      color: #eaeaea;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    tr:hover td {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .role-student { background: rgba(94,199,255,0.15); color: #5ec7ff; }
+    .role-faculty { background: rgba(123,226,138,0.15); color: #7be28a; }
+    .role-admin   { background: rgba(255,107,107,0.15); color: #ff6b6b; }
+    .role-hod     { background: rgba(192,132,252,0.15); color: #c084fc; }
+
+    .status-online  { color: #1dd1a1; }
+    .status-offline { color: #636e72; }
+
+    /* Actions */
+    .action-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 10px 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.06);
+      color: #d6c9ff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-family: "Poppins", sans-serif;
+    }
+
+    .action-btn:hover {
+      background: linear-gradient(135deg, #9b6bff, #6d2cff);
+      color: #fff;
+      border-color: transparent;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(140,80,255,0.4);
+    }
+
+    .action-btn.primary {
+      background: linear-gradient(135deg, #9b6bff, #6d2cff);
+      color: #fff;
+      border-color: transparent;
+    }
+
+    /* Back link */
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #c9a6ff;
+      text-decoration: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    .back-link:hover {
+      color: #e0c8ff;
+      text-shadow: 0 0 10px rgba(180,140,255,0.5);
+    }
+
+    @media (max-width: 600px) {
+      .admin-grid { grid-template-columns: 1fr; }
+      .action-bar { flex-direction: column; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="glow-bg"></div>
+
+  <div class="admin-container">
+
+    <a href="dashboard.html" class="back-link">← Back to Dashboard</a>
+
+    <div class="admin-header">
+      <h1>🛡️ Admin Panel</h1>
+      <p>Manage users, monitor activity, and configure feedback settings</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="admin-grid">
+      <div class="admin-card">
+        <h3><span class="icon">👥</span> Total Users</h3>
+        <div class="stat-value">128</div>
+        <div class="stat-label">Students, Faculty, and Admins</div>
+      </div>
+
+      <div class="admin-card">
+        <h3><span class="icon">📝</span> Total Feedback</h3>
+        <div class="stat-value">1,245</div>
+        <div class="stat-label">Across all faculty members</div>
+      </div>
+
+      <div class="admin-card">
+        <h3><span class="icon">👨‍🏫</span> Active Faculty</h3>
+        <div class="stat-value">9</div>
+        <div class="stat-label">Department of Data Science</div>
+      </div>
+
+      <div class="admin-card">
+        <h3><span class="icon">🟢</span> Online Now</h3>
+        <div class="stat-value">14</div>
+        <div class="stat-label">Active sessions</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-bar">
+      <button class="action-btn primary" onclick="alert('Export started — downloading feedback_report.csv')">📊 Export Reports</button>
+      <button class="action-btn" onclick="alert('Feedback window is now OPEN for submissions')">⏳ Open Feedback Window</button>
+      <button class="action-btn" onclick="alert('All abuse-flagged comments have been reviewed')">🚫 Review Flagged</button>
+      <button class="action-btn" onclick="alert('System cache cleared successfully')">🔄 Clear Cache</button>
+    </div>
+
+    <!-- Users Table -->
+    <div class="admin-table-wrap">
+      <h3>Recent Users</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Last Login</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Dr. Adarsh M J</td>
+            <td>hod.dse@college.edu</td>
+            <td><span class="role-badge role-hod">HOD</span></td>
+            <td><span class="status-online">● Online</span></td>
+            <td>Today, 9:30 AM</td>
+          </tr>
+          <tr>
+            <td>Gagana Deepa J</td>
+            <td>gagana_deepa@college.edu</td>
+            <td><span class="role-badge role-faculty">Faculty</span></td>
+            <td><span class="status-online">● Online</span></td>
+            <td>Today, 10:15 AM</td>
+          </tr>
+          <tr>
+            <td>Srikanth A S</td>
+            <td>aiml@aitckm.in</td>
+            <td><span class="role-badge role-faculty">Faculty</span></td>
+            <td><span class="status-offline">● Offline</span></td>
+            <td>Yesterday, 4:20 PM</td>
+          </tr>
+          <tr>
+            <td>Demo Student</td>
+            <td>student@facultylens.edu</td>
+            <td><span class="role-badge role-student">Student</span></td>
+            <td><span class="status-online">● Online</span></td>
+            <td>Today, 11:45 AM</td>
+          </tr>
+          <tr>
+            <td>Admin</td>
+            <td>admin@facultylens.edu</td>
+            <td><span class="role-badge role-admin">Admin</span></td>
+            <td><span class="status-online">● Online</span></td>
+            <td>Today, 8:00 AM</td>
+          </tr>
+          <tr>
+            <td>Harshitha H D</td>
+            <td>harshithahd@gmail.com</td>
+            <td><span class="role-badge role-faculty">Faculty</span></td>
+            <td><span class="status-offline">● Offline</span></td>
+            <td>Dec 05, 3:10 PM</td>
+          </tr>
+          <tr>
+            <td>Shalini I.S</td>
+            <td>shalinis@gmail.com</td>
+            <td><span class="role-badge role-faculty">Faculty</span></td>
+            <td><span class="status-offline">● Offline</span></td>
+            <td>Dec 04, 11:30 AM</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Feedback Logs -->
+    <div class="admin-table-wrap">
+      <h3>Recent Feedback Activity</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Faculty</th>
+            <th>Subject</th>
+            <th>Clarity</th>
+            <th>Teaching</th>
+            <th>Engagement</th>
+            <th>Sentiment</th>
+            <th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Gagana Deepa J</td>
+            <td>Operating System</td>
+            <td>9/10</td>
+            <td>Excellent</td>
+            <td>9.5/10</td>
+            <td style="color:#1dd1a1">Positive</td>
+            <td>Dec 06, 10:02 PM</td>
+          </tr>
+          <tr>
+            <td>Srikanth A S</td>
+            <td>Mathematics</td>
+            <td>9/10</td>
+            <td>Excellent</td>
+            <td>9.5/10</td>
+            <td style="color:#1dd1a1">Positive</td>
+            <td>Dec 06, 10:03 PM</td>
+          </tr>
+          <tr>
+            <td>Harshitha H D</td>
+            <td>Data Structure</td>
+            <td>9/10</td>
+            <td>Excellent</td>
+            <td>9.5/10</td>
+            <td style="color:#1dd1a1">Positive</td>
+            <td>Dec 06, 10:04 PM</td>
+          </tr>
+          <tr>
+            <td>Pallavi C.S</td>
+            <td>PHP Programming</td>
+            <td>8/10</td>
+            <td>Good</td>
+            <td>8.5/10</td>
+            <td style="color:#feca57">Neutral</td>
+            <td>Dec 06, 10:08 PM</td>
+          </tr>
+          <tr>
+            <td>Ramya C K</td>
+            <td>Python Programming</td>
+            <td>9/10</td>
+            <td>Excellent</td>
+            <td>9/10</td>
+            <td style="color:#1dd1a1">Positive</td>
+            <td>Dec 06, 10:07 PM</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</body>
+</html>

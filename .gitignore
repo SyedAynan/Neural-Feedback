@@ -1,0 +1,14 @@
+# Environment
+.env
+
+# OS files
+desktop.ini
+Thumbs.db
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# System
+*.log

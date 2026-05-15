@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elite Feedback Portal – Neon Edition</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ---------------------------------------------------------
+  GLOBAL THEME + RESET
+------------------------------------------------------------ */
+*{
+ margin:0;
+ padding:0;
+ box-sizing:border-box;
+ font-family:"Poppins",sans-serif;
+}
+
+html{scroll-behavior:smooth;}
+body{
+ background:#07070c;
+ color:#eaeaea;
+ overflow-x:hidden;
+}
+
+/* ---------------------------------------------------------
+  NEON BACKGROUND GLOW
+------------------------------------------------------------ */
+.bg-glow{
+ position:fixed;
+ top:-180px;
+ right:-220px;
+ width:900px;
+ height:900px;
+ filter:blur(160px);
+ background:radial-gradient(circle,rgba(160,70,255,0.55),rgba(0,0,0,0));
+ z-index:-1;
+ animation:floatGlow 14s infinite alternate ease-in-out;
+}
+@keyframes floatGlow{
+ from{transform:translate(0,0);}
+ to{transform:translate(-120px,80px);}
+}
+
+/* ---------------------------------------------------------
+  NAVIGATION BAR
+------------------------------------------------------------ */
+nav{
+ width:100%;
+ padding:18px 50px;
+ background:rgba(255,255,255,0.05);
+ backdrop-filter:blur(18px);
+ border-bottom:1px solid rgba(255,255,255,0.12);
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ position:fixed;
+ top:0;
+ left:0;
+ z-index:1000;
+}
+
+nav .logo{
+ color:#e7d7ff;
+ font-size:22px;
+ font-weight:600;
+ text-shadow:0 0 10px rgba(170,110,255,0.6);
+}
+
+nav ul{
+ list-style:none;
+ display:flex;
+ gap:28px;
+}
+
+nav ul li a{
+ color:#cfc7ff;
+ text-decoration:none;
+ font-weight:500;
+ transition:0.3s;
+}
+nav ul li a:hover{
+ color:white;
+ text-shadow:0 0 10px rgba(200,140,255,0.7);
+}
+
+/* ---------------------------------------------------------
+  REUSABLE SECTION + CARD
+------------------------------------------------------------ */
+section{
+ padding:140px 60px 70px;
+ min-height:100vh;
+}
+
+.card{
+ background:rgba(255,255,255,0.07);
+ border:1px solid rgba(255,255,255,0.12);
+ backdrop-filter:blur(18px);
+ border-radius:22px;
+ padding:35px;
+ box-shadow:0 0 22px rgba(150,70,255,0.2);
+ transition:0.3s;
+}
+
+.card:hover{
+ transform:translateY(-6px);
+ border-color:rgba(190,130,255,0.45);
+ box-shadow:0 0 35px rgba(160,120,255,0.45);
+}
+
+/* ---------------------------------------------------------
+  TYPOGRAPHY
+------------------------------------------------------------ */
+h1{
+ font-size:44px;
+ color:#e6dcff;
+ margin-bottom:10px;
+ text-shadow:0 0 14px rgba(150,100,255,0.5);
+}
+
+h2{
+ font-size:30px;
+ color:#decfff;
+ margin-bottom:15px;
+}
+
+p{
+ font-size:16px;
+ color:#d7d1e9;
+ line-height:1.6;
+}
+
+/* ---------------------------------------------------------
+  BUTTONS
+------------------------------------------------------------ */
+.btn{
+ background:linear-gradient(135deg,#9a6bff,#5723ff);
+ padding:14px 28px;
+ border-radius:14px;
+ display:inline-block;
+ text-decoration:none;
+ color:white;
+ font-weight:600;
+ box-shadow:0 6px 20px rgba(140,80,255,0.4);
+ transition:0.3s;
+}
+
+.btn:hover{
+ transform:translateY(-4px);
+ box-shadow:0 12px 32px rgba(150,80,255,0.7);
+}
+
+.btn:active{
+ transform:scale(0.96);
+ background:linear-gradient(135deg,#2dd4bf,#0ea5e9);
+ box-shadow:0 0 14px rgba(14,165,233,0.6);
+}
+
+/* ---------------------------------------------------------
+  HOME SECTION
+------------------------------------------------------------ */
+.home-flex{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:40px;
+}
+
+.home-img{
+ width:440px;
+ height:350px;
+ object-fit:cover;
+ border-radius:18px;
+ border:2px solid #bfa5ff;
+ box-shadow:0 0 25px rgba(190,140,255,0.35);
+}
+
+/* ---------------------------------------------------------
+  FEATURES GRID
+------------------------------------------------------------ */
+.features-grid{
+ display:grid;
+ gap:22px;
+ grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+}
+
+.feature{
+ padding:20px;
+ border-radius:18px;
+ background:rgba(255,255,255,0.08);
+ border-left:5px solid #ad7dff;
+ transition:0.3s;
+}
+
+.feature:hover{
+ background:rgba(255,255,255,0.16);
+ transform:translateX(10px);
+}
+
+/* ---------------------------------------------------------
+  AI ASSISTANT BOX (NEW UI)
+------------------------------------------------------------ */
+.ai-box{
+ width:600px;
+ margin:auto;
+ background:#111122;
+ padding:35px;
+ border-radius:22px;
+ border:1px solid rgba(255,255,255,0.12);
+ box-shadow:0 0 25px rgba(120,60,255,0.22);
+ animation:fadeIn 0.7s ease-out;
+}
+
+.ai-box textarea{
+ width:100%;
+ height:160px;
+ background:#0b0b18;
+ border:1px solid rgba(255,255,255,0.2);
+ padding:14px;
+ border-radius:14px;
+ color:#e7e5ff;
+ resize:none;
+ transition:0.3s;
+}
+
+.ai-box textarea:focus{
+ outline:none;
+ background:#151532;
+ border-color:#9d78ff;
+ box-shadow:0 0 18px rgba(150,80,255,0.55);
+}
+
+/* ---------------------------------------------------------
+  CONTACT FORM
+------------------------------------------------------------ */
+.contact-flex{
+ width:550px;
+ margin:auto;
+}
+
+input, textarea{
+ width:100%;
+ padding:14px;
+ border-radius:12px;
+ background:rgba(255,255,255,0.08);
+ border:1px solid rgba(255,255,255,0.25);
+ margin-bottom:14px;
+ color:white;
+ box-shadow:0 0 10px transparent;
+ transition:0.3s;
+}
+
+input:focus, textarea:focus{
+ border-color:#c7a6ff;
+ background:rgba(255,255,255,0.15);
+ box-shadow:0 0 14px rgba(180,120,255,0.4);
+}
+
+/* ---------------------------------------------------------
+  FOOTER
+------------------------------------------------------------ */
+footer{
+ padding:15px;
+ text-align:center;
+ color:#bfb8e7;
+ background:rgba(255,255,255,0.05);
+ border-top:1px solid rgba(255,255,255,0.15);
+ font-size:14px;
+ margin-top:40px;
+}
+
+@keyframes fadeIn{
+ from{opacity:0;transform:translateY(20px);}
+ to{opacity:1;transform:translateY(0);}
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="bg-glow"></div>
+
+<!-- ---------------------------------------------------------
+  NAVIGATION
+------------------------------------------------------------ -->
+<nav>
+ <div class="logo">Elite Feedback Portal</div>
+ <ul>
+  <li><a href="../dashboard.html">Home</a></li>
+  <li><a href="#about">About</a></li>
+  <li><a href="#features">Features</a></li>
+  <li><a href="#ai">AI Assistant</a></li>
+  <li><a href="#contact">Contact</a></li>
+ </ul>
+</nav>
+
+
+<!-- ---------------------------------------------------------
+  HOME
+------------------------------------------------------------ -->
+<section id="home">
+ <div class="card home-flex">
+   <div>
+     <h1>Welcome to Elite Feedback Portal</h1>
+     <p>A futuristic neon-themed portal for seamless student–faculty feedback.</p>
+     <a href="#features" class="btn">Explore Features</a>
+   </div>
+
+   <img src="group_pic.png" class="home-img">
+ </div>
+</section>
+
+
+<!-- ---------------------------------------------------------
+  ABOUT
+------------------------------------------------------------ -->
+<section id="about">
+ <div class="card">
+   <h2>About This Portal</h2>
+   <p>
+     Elite Feedback Portal enables transparent communication, automated feedback handling, AI insights,
+     and department-wide analytics to improve academic quality.
+   </p>
+ </div>
+</section>
+
+
+<!-- ---------------------------------------------------------
+  FEATURES
+------------------------------------------------------------ -->
+<section id="features">
+ <div class="card">
+   <h2>System Features</h2>
+
+   <div class="features-grid">
+     <div class="feature"><h3>Student Feedback</h3><p>Submit real-time faculty reviews.</p></div>
+     <div class="feature"><h3>Faculty Dashboard</h3><p>Monitor ratings & insight charts.</p></div>
+     <div class="feature"><h3>HOD Analytics</h3><p>Explore multi-level performance stats.</p></div>
+     <div class="feature"><h3>AI Assistant</h3><p>Smart predictions & summaries.</p></div>
+     <div class="feature"><h3>Admin Controls</h3><p>Manage users & activity logs.</p></div>
+     <div class="feature"><h3>Reports</h3><p>Export Excel & PDF reports.</p></div>
+   </div>
+
+ </div>
+</section>
+
+
+<!-- ---------------------------------------------------------
+  AI ASSISTANT (REDESIGNED)
+------------------------------------------------------------ -->
+<section id="ai">
+ <div class="ai-box">
+   <h2>AI Assistant</h2>
+
+   <textarea placeholder="Type your question…"></textarea>
+
+   <a href="" class="btn" style="margin-top:15px;">
+     Ask AI
+   </a>
+ </div>
+</section>
+
+
+<!-- ---------------------------------------------------------
+  CONTACT SUPPORT
+------------------------------------------------------------ -->
+<section id="contact">
+ <div class="card contact-flex">
+   <h2>Contact Support</h2>
+
+   <input type="text" placeholder="Your Name">
+   <input type="email" placeholder="Your Email">
+   <textarea placeholder="Message"></textarea>
+
+   <a href="contact.html" class="btn">Submit</a>
+ </div>
+</section>
+
+
+<!-- ---------------------------------------------------------
+  FOOTER
+------------------------------------------------------------ -->
+<footer>
+ © 2025 Elite Feedback Portal – Neon Edition
+</footer>
+
+</body>
+</html>
