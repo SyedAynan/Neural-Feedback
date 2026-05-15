@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faculty Leaderboard — FacultyLens</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root { --bg:#0a0a0f; --glass:rgba(255,255,255,0.05); --border:rgba(255,255,255,0.12); --accent:#9b6bff; --text:#eaeaea; --muted:#bfb5e0; }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:"Poppins",sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+.glow-bg { position:fixed; width:700px; height:700px; background:radial-gradient(circle,rgba(140,70,255,0.45),transparent); top:-200px; right:-150px; filter:blur(160px); z-index:-1; animation:f 14s infinite alternate ease-in-out; }
+@keyframes f { from{transform:translate(0,0)} to{transform:translate(-100px,70px)} }
+
+.nav { background:var(--glass); border-bottom:1px solid var(--border); backdrop-filter:blur(18px); padding:16px 40px; display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:100; }
+.nav a { color:var(--muted); text-decoration:none; font-weight:500; transition:0.3s; }
+.nav a:first-child { font-size:24px; font-weight:700; color:#d2c7ff; }
+.nav-links { display:flex; gap:22px; }
+.nav a:hover { color:#d5b4ff; }
+
+.container { max-width:900px; margin:40px auto; padding:0 20px; }
+
+.page-title { text-align:center; margin-bottom:36px; }
+.page-title h1 { font-size:32px; color:#d6c9ff; text-shadow:0 0 14px rgba(160,120,255,0.4); margin-bottom:6px; }
+.page-title p { color:var(--muted); font-size:14px; }
+
+/* Podium */
+.podium { display:flex; justify-content:center; align-items:end; gap:16px; margin-bottom:40px; }
+.podium-slot { text-align:center; transition:0.3s; cursor:default; }
+.podium-slot:hover { transform:translateY(-6px); }
+.podium-avatar { width:72px; height:72px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; color:#fff; margin:0 auto 8px; }
+.podium-name { font-size:14px; font-weight:600; color:#d6c9ff; margin-bottom:4px; }
+.podium-score { font-size:12px; color:var(--muted); }
+.podium-base { border-radius:12px 12px 0 0; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:800; color:rgba(255,255,255,0.3); margin-top:8px; }
+
+.gold .podium-avatar { background:linear-gradient(135deg,#ffd700,#ff8c00); box-shadow:0 0 25px rgba(255,215,0,0.5); }
+.gold .podium-base { background:linear-gradient(180deg,rgba(255,215,0,0.2),rgba(255,215,0,0.05)); width:140px; height:120px; }
+
+.silver .podium-avatar { background:linear-gradient(135deg,#c0c0c0,#808080); box-shadow:0 0 20px rgba(192,192,192,0.4); }
+.silver .podium-base { background:linear-gradient(180deg,rgba(192,192,192,0.15),rgba(192,192,192,0.03)); width:130px; height:90px; }
+
+.bronze .podium-avatar { background:linear-gradient(135deg,#cd7f32,#8b4513); box-shadow:0 0 20px rgba(205,127,50,0.4); }
+.bronze .podium-base { background:linear-gradient(180deg,rgba(205,127,50,0.15),rgba(205,127,50,0.03)); width:130px; height:70px; }
+
+/* Rankings Table */
+.rankings { background:var(--glass); border:1px solid var(--border); border-radius:22px; padding:28px; backdrop-filter:blur(18px); }
+.rankings h3 { color:#d6c9ff; font-size:18px; margin-bottom:20px; }
+
+.rank-row { display:grid; grid-template-columns:50px 1fr 100px 80px; align-items:center; padding:14px 16px; border-radius:12px; margin-bottom:8px; transition:0.3s; cursor:default; }
+.rank-row:hover { background:rgba(255,255,255,0.04); transform:translateX(4px); }
+
+.rank-num { font-size:20px; font-weight:700; }
+.rank-num.gold { color:#ffd700; }
+.rank-num.silver { color:#c0c0c0; }
+.rank-num.bronze { color:#cd7f32; }
+.rank-num.normal { color:var(--muted); }
+
+.rank-info .name { font-size:15px; font-weight:600; color:#d6c9ff; }
+.rank-info .role { font-size:12px; color:var(--muted); }
+
+.rank-score { font-size:20px; font-weight:700; color:#c084fc; text-align:right; }
+
+.rank-bar { height:8px; border-radius:8px; background:rgba(255,255,255,0.06); overflow:hidden; }
+.rank-bar-fill { height:100%; border-radius:8px; transition:width 1.2s ease; }
+
+.rank-trend { font-size:14px; text-align:center; }
+.trend-up { color:#1dd1a1; }
+.trend-down { color:#ff6b6b; }
+.trend-same { color:var(--muted); }
+
+/* Stats strip */
+.stats-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:32px; }
+.stat-box { background:var(--glass); border:1px solid var(--border); border-radius:14px; padding:18px; text-align:center; backdrop-filter:blur(18px); transition:0.3s; }
+.stat-box:hover { border-color:rgba(180,140,255,0.4); transform:translateY(-3px); }
+.stat-box .num { font-size:26px; font-weight:700; color:#c084fc; }
+.stat-box .label { font-size:12px; color:var(--muted); margin-top:4px; }
+
+@media(max-width:600px) {
+  .podium { flex-direction:column; align-items:center; }
+  .stats-strip { grid-template-columns:1fr 1fr; }
+  .rank-row { grid-template-columns:40px 1fr 60px; }
+  .rank-bar { display:none; }
+}
+</style>
+</head>
+<body>
+<div class="glow-bg"></div>
+
+<nav class="nav">
+  <a href="dashboard.html">FacultyLens</a>
+  <div class="nav-links">
+    <a href="dashboard.html">Dashboard</a>
+    <a href="Faculties/faculties.html">Faculty</a>
+    <a href="compare.html">Compare</a>
+    <a href="essentials/report.html">Reports</a>
+    <a href="profile.html">👤</a>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="page-title">
+    <h1>🏆 Faculty Leaderboard</h1>
+    <p>Rankings based on student feedback across all metrics</p>
+  </div>
+
+  <!-- Stats Strip -->
+  <div class="stats-strip">
+    <div class="stat-box">
+      <div class="num">9</div>
+      <div class="label">Faculty Ranked</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">1,245</div>
+      <div class="label">Total Feedback</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">9.0</div>
+      <div class="label">Avg Department Score</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">96%</div>
+      <div class="label">Participation Rate</div>
+    </div>
+  </div>
+
+  <!-- Podium -->
+  <div class="podium" id="podium"></div>
+
+  <!-- Full Rankings -->
+  <div class="rankings">
+    <h3>Full Rankings</h3>
+    <div id="rankingsList"></div>
+  </div>
+</div>
+
+<script>
+const faculty = [
+  { name:"Dr. Adarsh M J",         role:"HOD",               score:9.5, trend:"up"   },
+  { name:"Prof. Gagana Deepa J",   role:"Branch Coordinator", score:9.2, trend:"up"   },
+  { name:"Prof. Srikanth A S",     role:"Mathematics",        score:9.2, trend:"same" },
+  { name:"Prof. Harshitha H D",    role:"Data Structures",    score:9.2, trend:"up"   },
+  { name:"Prof. Ramya C K",        role:"Python",             score:9.0, trend:"up"   },
+  { name:"Prof. Shalini I.S",      role:"DDCO",               score:8.8, trend:"down" },
+  { name:"Dr. Thayaba Nausheen A", role:"Operating System",   score:8.8, trend:"same" },
+  { name:"Prof. Seema B S",        role:"SCR Activity",       score:8.8, trend:"up"   },
+  { name:"Prof. Pallavi C.S",      role:"PHP / Web Dev",      score:8.6, trend:"same" }
+];
+
+const podiumEl = document.getElementById("podium");
+const listEl = document.getElementById("rankingsList");
+const medals = ["🥇","🥈","🥉"];
+const classes = ["gold","silver","bronze"];
+const trendIcons = { up:"↑", down:"↓", same:"—" };
+const trendClass = { up:"trend-up", down:"trend-down", same:"trend-same" };
+
+// Podium (top 3 in order: 2nd, 1st, 3rd)
+const order = [1, 0, 2];
+order.forEach(i => {
+  const f = faculty[i];
+  podiumEl.innerHTML += `
+    <div class="podium-slot ${classes[i]}">
+      <div class="podium-avatar">${f.name.charAt(0)}</div>
+      <div class="podium-name">${f.name.split(" ").slice(0,3).join(" ")}</div>
+      <div class="podium-score">${f.score}/10 • ${f.role}</div>
+      <div class="podium-base">${medals[i]}</div>
+    </div>
+  `;
+});
+
+// Full list
+faculty.forEach((f, i) => {
+  const pct = (f.score / 10 * 100);
+  const rankClass = i < 3 ? classes[i] : "normal";
+  const colors = ["linear-gradient(90deg,#ffd700,#ff8c00)","linear-gradient(90deg,#c0c0c0,#808080)","linear-gradient(90deg,#cd7f32,#8b4513)"];
+  const barColor = i < 3 ? colors[i] : "linear-gradient(90deg,#9b6bff,#6d2cff)";
+
+  listEl.innerHTML += `
+    <div class="rank-row">
+      <div class="rank-num ${rankClass}">#${i+1}</div>
+      <div class="rank-info">
+        <div class="name">${f.name}</div>
+        <div class="role">${f.role}</div>
+        <div class="rank-bar" style="margin-top:6px;width:200px;">
+          <div class="rank-bar-fill" style="width:${pct}%;background:${barColor};"></div>
+        </div>
+      </div>
+      <div class="rank-score">${f.score}</div>
+      <div class="rank-trend ${trendClass[f.trend]}">${trendIcons[f.trend]}</div>
+    </div>
+  `;
+});
+</script>
+</body>
+</html>
