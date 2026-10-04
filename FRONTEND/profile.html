@@ -248,20 +248,126 @@ document.addEventListener("DOMContentLoaded", () => {
   const user = JSON.parse(localStorage.getItem("user"));
   if (!user) { window.location.href = "index.html"; return; }
 
-  // Populate profile from localStorage
-  const rawName = user.name || user.username || user.email || "Student";
-  const name = rawName.includes("@") ? rawName.split("@")[0] : rawName;
-  document.getElementById("profileName").textContent = name.charAt(0).toUpperCase() + name.slice(1);
-  document.getElementById("avatarInitial").textContent = name.charAt(0).toUpperCase();
-  document.getElementById("emailField").value = user.email || "";
+  const profileName = document.getElementById("profileName");
+  const avatarInitial = document.getElementById("avatarInitial");
+  const emailField = document.getElementById("emailField");
+  const roleBadge = document.getElementById("roleBadge");
+  const memberSince = document.getElementById("memberSince");
+  const fullName = document.getElementById("fullName");
+  const feedbackGiven = document.getElementById("feedbackGiven");
+  const facultyRated = document.getElementById("facultyRated");
+  const avgScore = document.getElementById("avgScore");
+  const saveProfileBtn = document.getElementById("saveProfileBtn");
+  const changePwBtn = document.getElementById("changePwBtn");
+
+  function toDisplayName(value) {
+    const base = (value || "Student").trim();
+    const normalized = base.includes("@") ? base.split("@")[0] : base;
+    return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+  }
+
+  function toRoleLabel(role) {
+    if (!role) return "Student";
+    if (role.toLowerCase() === "hod") return "Head of Department";
+    return role.charAt(0).toUpperCase() + role.slice(1);
+  }
+
+  function updateIdentity(name, email, role) {
+    const displayName = toDisplayName(name || email || "Student");
+    profileName.textContent = displayName;
+    avatarInitial.textContent = displayName.charAt(0).toUpperCase();
+    fullName.value = name || displayName;
+    emailField.value = email || "";
+    roleBadge.textContent = toRoleLabel(role);
+  }
+
+  updateIdentity(user.name || user.username || user.email, user.email, user.role || "student");
+
+  async function loadProfile() {
+    try {
+      const res = await fetch("../API/profile.php");
+      if (res.status === 401) {
+        localStorage.removeItem("user");
+        window.location.href = "index.html";
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error("Failed to load profile");
+      }
+
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.message || "Profile load failed");
+      }
+
+      const apiUser = data.user || {};
+      const stats = data.stats || {};
+
+      updateIdentity(apiUser.name, apiUser.email, apiUser.role);
+      memberSince.textContent = apiUser.created_at
+        ? `Member since ${new Date(apiUser.created_at).toLocaleDateString("en-US", { month: "short", year: "numeric" })}`
+        : "Member since —";
+
+      feedbackGiven.textContent = Number(stats.feedback_given || 0).toString();
+      facultyRated.textContent = Number(stats.faculty_rated || 0).toString();
+      avgScore.textContent = Number(stats.avg_score || 0).toFixed(1);
+
+      localStorage.setItem("user", JSON.stringify({
+        ...user,
+        id: apiUser.id || user.id || null,
+        name: apiUser.name || user.name || "",
+        email: apiUser.email || user.email || "",
+        role: apiUser.role || user.role || "student",
+        loggedIn: true
+      }));
+    } catch (err) {
+      console.error("Profile load failed", err);
+      showToast("⚠️ Failed to load profile details");
+    }
+  }
+
+  loadProfile();
 
   // Save profile
-  document.getElementById("saveProfileBtn").addEventListener("click", () => {
-    showToast("✅ Profile saved successfully");
+  saveProfileBtn.addEventListener("click", async () => {
+    const nameValue = fullName.value.trim();
+    if (!nameValue) {
+      showToast("⚠️ Name is required");
+      return;
+    }
+
+    saveProfileBtn.disabled = true;
+    saveProfileBtn.textContent = "Saving...";
+    try {
+      const res = await fetch("../API/profile.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: nameValue })
+      });
+
+      if (!res.ok) throw new Error("Request failed");
+
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.message || "Update failed");
+      }
+
+      updateIdentity(data.name, emailField.value, roleBadge.textContent.toLowerCase());
+      const latest = JSON.parse(localStorage.getItem("user")) || {};
+      localStorage.setItem("user", JSON.stringify({ ...latest, name: data.name, loggedIn: true }));
+      showToast("✅ Profile saved successfully");
+    } catch (err) {
+      console.error("Profile save failed", err);
+      showToast("⚠️ Unable to save profile");
+    } finally {
+      saveProfileBtn.disabled = false;
+      saveProfileBtn.textContent = "Save Changes";
+    }
   });
 
   // Change password
-  document.getElementById("changePwBtn").addEventListener("click", () => {
+  changePwBtn.addEventListener("click", async () => {
     const curr = document.getElementById("currentPw").value;
     const newP = document.getElementById("newPw").value;
     const conf = document.getElementById("confirmPw").value;
@@ -270,10 +376,37 @@ document.addEventListener("DOMContentLoaded", () => {
     if (newP.length < 6) return showToast("⚠️ Password must be 6+ characters");
     if (newP !== conf) return showToast("⚠️ Passwords don't match");
 
-    showToast("✅ Password updated successfully");
-    document.getElementById("currentPw").value = "";
-    document.getElementById("newPw").value = "";
-    document.getElementById("confirmPw").value = "";
+    changePwBtn.disabled = true;
+    changePwBtn.textContent = "Updating...";
+
+    try {
+      const res = await fetch("../API/change-password.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          currentPassword: curr,
+          newPassword: newP
+        })
+      });
+
+      if (!res.ok) throw new Error("Request failed");
+
+      const data = await res.json();
+      if (!data.success) {
+        throw new Error(data.message || "Update failed");
+      }
+
+      showToast("✅ Password updated successfully");
+      document.getElementById("currentPw").value = "";
+      document.getElementById("newPw").value = "";
+      document.getElementById("confirmPw").value = "";
+    } catch (err) {
+      console.error("Password update failed", err);
+      showToast("⚠️ Unable to update password");
+    } finally {
+      changePwBtn.disabled = false;
+      changePwBtn.textContent = "Update Password";
+    }
   });
 
   // Toast

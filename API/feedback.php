@@ -1,4 +1,5 @@
 <?php
+session_start();
 header("Content-Type: application/json");
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -11,6 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 require "../BACKEND/connect.php";
 
+if (!isset($_SESSION["user_id"])) {
+    http_response_code(401);
+    echo json_encode(["success" => false, "message" => "Unauthorized"]);
+    exit;
+}
+
 $data = json_decode(file_get_contents("php://input"), true);
 
 if (empty($data["teacher"])) {
@@ -20,10 +27,11 @@ if (empty($data["teacher"])) {
 
 $stmt = $conn->prepare("
     INSERT INTO feedback 
-    (teacher, subject, clarity, knowledge, interaction, comment)
-    VALUES (?, ?, ?, ?, ?, ?)
+    (user_id, teacher, subject, clarity, knowledge, interaction, comment)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
 ");
 
+$userId = intval($_SESSION["user_id"]);
 $subject = $data["subject"] ?? null;
 $clarity = intval($data["clarity"] ?? 0);
 $knowledge = intval($data["knowledge"] ?? 0);
@@ -31,7 +39,8 @@ $interaction = intval($data["interaction"] ?? 0);
 $comment = $data["comment"] ?? "";
 
 $stmt->bind_param(
-    "ssiiis",
+    "issiiis",
+    $userId,
     $data["teacher"],
     $subject,
     $clarity,
