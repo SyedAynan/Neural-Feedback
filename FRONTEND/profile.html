@@ -353,8 +353,8 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error(data.message || "Update failed");
       }
 
-      updateIdentity(data.name, emailField.value, roleBadge.textContent.toLowerCase());
       const latest = JSON.parse(localStorage.getItem("user")) || {};
+      updateIdentity(data.name, emailField.value, latest.role || "student");
       localStorage.setItem("user", JSON.stringify({ ...latest, name: data.name, loggedIn: true }));
       showToast("✅ Profile saved successfully");
     } catch (err) {
