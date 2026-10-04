@@ -112,7 +112,7 @@ Neural-Feedback-main/
 | Admin   | admin@facultylens.edu     | admin123     |
 | Student | student@facultylens.edu   | student123   |
 
-> **Note**: The login works in "demo mode" even without the PHP backend — just enter any email/password and you'll be redirected to the dashboard.
+> **Note**: Backend APIs must be running for login and feedback submission.
 
 ---
 

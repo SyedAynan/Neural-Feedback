@@ -557,6 +557,11 @@ document.addEventListener("DOMContentLoaded", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
+
+      if (!res.ok) {
+        throw new Error("Request failed");
+      }
+
       const data = await res.json();
       if (data.success) {
         successOverlay.classList.add("active");
@@ -564,9 +569,8 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(data.message || "Submission failed");
       }
     } catch (err) {
-      // Demo mode — show success anyway
-      console.warn("Backend not available — demo mode", err);
-      successOverlay.classList.add("active");
+      console.error("Feedback submission failed", err);
+      alert("Unable to submit feedback right now. Please try again.");
     }
 
     submitBtn.textContent = "Submit Feedback";

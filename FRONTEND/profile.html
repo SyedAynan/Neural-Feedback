@@ -249,7 +249,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!user) { window.location.href = "index.html"; return; }
 
   // Populate profile from localStorage
-  const name = user.email ? user.email.split("@")[0] : "Student";
+  const rawName = user.name || user.username || user.email || "Student";
+  const name = rawName.includes("@") ? rawName.split("@")[0] : rawName;
   document.getElementById("profileName").textContent = name.charAt(0).toUpperCase() + name.slice(1);
   document.getElementById("avatarInitial").textContent = name.charAt(0).toUpperCase();
   document.getElementById("emailField").value = user.email || "";

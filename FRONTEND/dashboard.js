@@ -13,8 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Welcome message
   const welcomeMsg = document.getElementById("welcomeMsg");
-  if (welcomeMsg && user.email) {
-    const name = user.email.split("@")[0];
+  if (welcomeMsg) {
+    const rawName = user.name || user.username || user.email || "Student";
+    const name = rawName.includes("@") ? rawName.split("@")[0] : rawName;
     welcomeMsg.textContent = `Welcome back, ${name}! 👋`;
   }
 
@@ -36,8 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logoutBtn");
 
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", (e) => {
+    logoutBtn.addEventListener("click", async (e) => {
       e.preventDefault();
+      try {
+        await fetch("../API/logout.php", {
+          method: "POST",
+          headers: { "X-Requested-With": "XMLHttpRequest" }
+        });
+      } catch (err) {
+        console.warn("Logout request failed", err);
+      }
       localStorage.removeItem("user");
       window.location.href = "index.html";
     });
@@ -74,8 +83,9 @@ document.addEventListener("DOMContentLoaded", () => {
      6. ANIMATED COUNTER
      ===================================== */
   function animateCounter(el, target, suffix = "") {
+    if (!el) return;
     let current = 0;
-    const step = Math.ceil(target / 60);
+    const step = Math.max(1, Math.ceil(target / 60));
     const interval = setInterval(() => {
       current += step;
       if (current >= target) {
@@ -88,26 +98,63 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const avgRating = document.getElementById("avgRating");
   const feedbackCount = document.getElementById("feedbackCount");
+  const lecturesEvaluated = document.getElementById("lecturesEvaluated");
+  const topFaculty = document.getElementById("topFaculty");
 
-  if (avgRating) {
-    avgRating.textContent = "0";
-    setTimeout(() => {
-      let val = 0;
-      const interval = setInterval(() => {
-        val += 0.1;
-        if (val >= 4.3) {
-          val = 4.3;
-          clearInterval(interval);
-        }
-        avgRating.textContent = val.toFixed(1);
-      }, 40);
-    }, 300);
+  if (avgRating) avgRating.textContent = "0.0";
+  if (feedbackCount) feedbackCount.textContent = "0";
+  if (lecturesEvaluated) lecturesEvaluated.textContent = "0";
+  if (topFaculty) topFaculty.textContent = "—";
+
+  async function loadDashboardStats() {
+    try {
+      const res = await fetch("../API/rating.php");
+      if (!res.ok) {
+        throw new Error("Failed to load ratings");
+      }
+      const data = await res.json();
+      if (!data.success || !Array.isArray(data.labels) || !Array.isArray(data.ratings) || !Array.isArray(data.counts)) {
+        throw new Error("Invalid ratings response");
+      }
+
+      const totalFeedback = data.counts.reduce((sum, count) => sum + Number(count || 0), 0);
+      const weightedScore = data.ratings.reduce((sum, rating, idx) => {
+        return sum + Number(rating || 0) * Number(data.counts[idx] || 0);
+      }, 0);
+      const overallRating = totalFeedback > 0 ? (weightedScore / totalFeedback) : 0;
+
+      if (avgRating) {
+        avgRating.textContent = "0.0";
+        let val = 0;
+        const interval = setInterval(() => {
+          val += 0.1;
+          if (val >= overallRating) {
+            val = overallRating;
+            clearInterval(interval);
+          }
+          avgRating.textContent = val.toFixed(1);
+        }, 40);
+      }
+
+      setTimeout(() => animateCounter(feedbackCount, totalFeedback), 150);
+      if (lecturesEvaluated) lecturesEvaluated.textContent = data.labels.length.toString();
+
+      if (topFaculty && data.labels.length > 0) {
+        let topIndex = 0;
+        data.ratings.forEach((value, idx) => {
+          if (Number(value || 0) > Number(data.ratings[topIndex] || 0)) {
+            topIndex = idx;
+          }
+        });
+        topFaculty.textContent = data.labels[topIndex] || "—";
+      }
+    } catch (err) {
+      console.error("Failed to load dashboard stats", err);
+      showToast("Unable to load live stats");
+    }
   }
 
-  if (feedbackCount) {
-    feedbackCount.textContent = "0";
-    setTimeout(() => animateCounter(feedbackCount, 1245), 300);
-  }
+  loadDashboardStats();
 
   /* =====================================
      7. TOAST NOTIFICATION

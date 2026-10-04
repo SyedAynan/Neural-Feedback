@@ -76,11 +76,19 @@ document.addEventListener("DOMContentLoaded", () => {
         })
       });
 
+      if (!res.ok) {
+        throw new Error("Login request failed");
+      }
+
       const data = await res.json();
 
       if (data.success) {
         // Save session info locally
         localStorage.setItem("user", JSON.stringify({
+          id: data.id || null,
+          name: data.name || data.username || "",
+          username: data.username || "",
+          role: data.role || "",
           email:    email.value,
           loggedIn: true
         }));
@@ -93,27 +101,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         window.location.href = "dashboard.html";
       } else {
-        showError("Invalid email or password");
+        showError(data.message || "Invalid email or password");
         btn.textContent = "Log in";
         btn.classList.remove("loading");
       }
     } catch (err) {
-      // Fallback — demo mode (when PHP backend is not running)
-      console.warn("Backend not reachable — entering demo mode", err);
-
-      localStorage.setItem("user", JSON.stringify({
-        email:    email.value,
-        loggedIn: true,
-        demo:     true
-      }));
-
-      if (remember && remember.checked) {
-        localStorage.setItem("savedEmail", email.value);
-      } else {
-        localStorage.removeItem("savedEmail");
-      }
-
-      window.location.href = "dashboard.html";
+      console.error("Login failed", err);
+      showError("Unable to reach server. Please try again.");
+      btn.textContent = "Log in";
+      btn.classList.remove("loading");
     }
   });
 

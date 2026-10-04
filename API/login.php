@@ -22,7 +22,7 @@ if (empty($data["email"]) || empty($data["password"])) {
 
 $email = $conn->real_escape_string($data["email"]);
 
-$stmt = $conn->prepare("SELECT id, name, username, password, role FROM users WHERE email = ?");
+$stmt = $conn->prepare("SELECT id, name, email, username, password, role FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $res = $stmt->get_result();
@@ -40,6 +40,9 @@ if ($row = $res->fetch_assoc()) {
 
         echo json_encode([
             "success"  => true,
+            "id"       => intval($row["id"]),
+            "name"     => $row["name"],
+            "email"    => $row["email"],
             "username" => $row["username"] ?: $row["name"],
             "role"     => $row["role"]
         ]);
