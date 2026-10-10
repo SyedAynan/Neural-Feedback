@@ -10,5 +10,14 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Dependencies
+vendor/
+composer.lock
+
+# Exports / local data
+*.csv
+*.sql.bak
+.data/
+
 # System
 *.log
