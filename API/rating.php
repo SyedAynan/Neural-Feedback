@@ -22,6 +22,12 @@ $query = "
 
 $result = $conn->query($query);
 
+if (!$result) {
+    echo json_encode(["success" => false, "message" => "Failed to load ratings"]);
+    $conn->close();
+    exit;
+}
+
 $labels    = [];
 $ratings   = [];
 $counts    = [];

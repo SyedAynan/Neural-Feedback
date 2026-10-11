@@ -6,5 +6,5 @@ if (!isset($_SESSION["user_id"])) {
 }
 ?>
 
-<h1>Welcome, <?php echo $_SESSION["username"]; ?> 👋</h1>
+<h1>Welcome, <?php echo htmlspecialchars($_SESSION["username"] ?? "Guest", ENT_QUOTES, "UTF-8"); ?> 👋</h1>
 <a href="../API/logout.php">Logout</a>

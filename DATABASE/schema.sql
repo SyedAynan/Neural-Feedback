@@ -84,7 +84,7 @@ INSERT INTO faculty (name, designation, department, subject, email, photo) VALUE
 -- ============================================================
 INSERT INTO users (name, email, password, role, username) VALUES
 ('Admin', 'admin@facultylens.edu',
- '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+ '$2y$10$f4ZXyVqCXaoPH69/lE.qLOOZSrS5YYbdg8D5fOpxLdYNIlrbhb8iW',
  'admin', 'admin');
 
 -- ============================================================
@@ -92,5 +92,5 @@ INSERT INTO users (name, email, password, role, username) VALUES
 -- ============================================================
 INSERT INTO users (name, email, password, role, username) VALUES
 ('Demo Student', 'student@facultylens.edu',
- '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
+ '$2y$10$UitzvN6VlH3.9x7aDWkWhOW0JKokaIOK276r0owpJGWDKB.rRO0BK',
  'student', 'demo_student');

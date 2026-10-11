@@ -54,6 +54,16 @@ document.addEventListener("DOMContentLoaded", () => {
       : "";
   });
 
+  /* ===== OAuth (not configured in this build) ===== */
+  [["googleLogin", "Google"], ["appleLogin", "Apple"]].forEach(([id, name]) => {
+    const oauthBtn = document.getElementById(id);
+    if (oauthBtn) {
+      oauthBtn.addEventListener("click", () => {
+        showError(`${name} sign-in isn't enabled in this demo — please use email login.`);
+      });
+    }
+  });
+
   /* ===== Login Handler ===== */
   btn.addEventListener("click", async () => {
     errorMsg.textContent = "";

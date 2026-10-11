@@ -30,6 +30,13 @@ $knowledge = intval($data["knowledge"] ?? 0);
 $interaction = intval($data["interaction"] ?? 0);
 $comment = $data["comment"] ?? "";
 
+foreach (["clarity" => $clarity, "knowledge" => $knowledge, "interaction" => $interaction] as $field => $value) {
+    if ($value < 1 || $value > 10) {
+        echo json_encode(["success" => false, "message" => "Ratings must be between 1 and 10"]);
+        exit;
+    }
+}
+
 $stmt->bind_param(
     "ssiiis",
     $data["teacher"],

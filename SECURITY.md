@@ -23,8 +23,8 @@ acknowledgement within 7 days.
 - `DATABASE/schema.sql` ships **demo credentials** (`admin123` / `student123`)
   with a publicly known bcrypt hash. Change or remove them before any shared
   deployment.
-- `API/db.php` is a legacy connection file with hardcoded credentials — use
-  `BACKEND/connect.php` + `.env` instead; `API/db.php` is pending removal.
+- All endpoints use `BACKEND/connect.php` + `.env` for DB access (legacy
+  hardcoded-credential connection files were removed).
 - API CORS headers allow `*` (local-demo convenience, not internet-safe).
 - No rate limiting, CSRF tokens, or password-strength policy yet.
 - `.env` (real DB credentials) must never be committed — it is gitignored;

@@ -20,7 +20,7 @@ if (empty($data["email"]) || empty($data["password"])) {
     exit;
 }
 
-$email = $conn->real_escape_string($data["email"]);
+$email = $data["email"];
 
 $stmt = $conn->prepare("SELECT id, name, username, password, role FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);

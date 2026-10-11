@@ -356,11 +356,13 @@ footer{
  <div class="ai-box">
    <h2>AI Assistant</h2>
 
-   <textarea placeholder="Type your question…"></textarea>
+   <textarea id="aiQuestion" placeholder="Type your question…"></textarea>
 
-   <a href="" class="btn" style="margin-top:15px;">
+   <a href="#ai" class="btn" style="margin-top:15px;" onclick="askAIDemo(event)">
      Ask AI
    </a>
+
+   <div id="aiResponse" style="display:none; margin-top:15px; padding:14px; border-radius:12px; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); font-size:14px; color:#d7d1e9;"></div>
  </div>
 </section>
 
@@ -385,8 +387,20 @@ footer{
   FOOTER
 ------------------------------------------------------------ -->
 <footer>
- © 2025 Elite Feedback Portal – Neon Edition
+ © 2026 Elite Feedback Portal – Neon Edition
 </footer>
+
+<script>
+function askAIDemo(e) {
+  e.preventDefault();
+  const box = document.getElementById("aiResponse");
+  const q = document.getElementById("aiQuestion").value.trim();
+  box.style.display = "block";
+  box.textContent = q
+    ? "AI assistant is a UI preview in this build — live answers are not connected yet."
+    : "Type a question above first — the AI assistant is a UI preview in this build.";
+}
+</script>
 
 </body>
 </html>
