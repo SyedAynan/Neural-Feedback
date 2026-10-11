@@ -17,16 +17,13 @@
 
 </div>
 
----
-
 ## 📜 Table of Contents
 - [✨ Features](#-features)
-- [🖼️ AI Image Prompts for Your Repository](#️-ai-image-prompts-for-your-repository)
 - [🧰 Tech Stack](#-tech-stack)
 - [⚡ Quick Start & Deployment](#-quick-start--deployment)
 - [🔑 Demo Credentials](#-demo-credentials)
 - [🔌 API Endpoints](#-api-endpoints)
-- [🗄️ Database Schema](#️-database-schema)
+- [🗄️ Database Schema](#-database-schema)
 - [🔒 Security & Code Quality](#-security--code-quality)
 - [🎨 Design System](#-design-system)
 - [📝 License](#-license)
@@ -49,23 +46,7 @@
 | 📤 **Data Export** | CSV export capabilities & print-friendly report generation | Admin & Dashboard tools |
 | 🚫 **Custom 404** | Glassmorphic theme-matched not-found fallback page | `404.html` |
 
----
-
-## 🖼️ AI Image Prompts for Your Repository
-
-If you want to generate additional high-end promotional graphics or UI assets for this repository (using Midjourney, DALL-E 3, Flux, or Leonardo.ai), use these pre-optimized prompts:
-
-### 🎨 Prompt 1: Repository Hero Banner (Header)
-> `A futuristic dark glassmorphic banner artwork for an AI education portal titled FacultyLens Neural Feedback System. Featuring glowing 3D purple neural network node connections, holographic analytical dashboard cards, neon purple data charts, dark violet background with glowing ambient aura, 8k resolution web concept art --ar 16:9`
-
-### 🎨 Prompt 2: Glassmorphic UI Dashboard Asset
-> `Sleek dark mode glassmorphic UI dashboard design, glowing purple gradient accents (#9b6bff to #6d2cff), frosted glass cards with subtle border highlight, interactive bar charts and star rating widgets, modern Google Poppins typography, clean technology mockup --ar 16:9`
-
-### 🎨 Prompt 3: Leaderboard & Trophy Podium Art
-> `3D futuristic glass trophy podium for top faculty leaderboard, neon purple illumination, glowing star rating badges floating in air, dark cybernetic background, luxury UI asset style --ar 16:9`
-
-### 🎨 Prompt 4: Mobile & Web App Mockup
-> `Dual screen device mockup showing laptop and smartphone running FacultyLens feedback system, neon dark theme, crisp glassmorphism aesthetic, studio lighting --ar 16:9`
+---ultyLens feedback system, neon dark theme, crisp glassmorphism aesthetic, studio lighting --ar 16:9`
 
 ---
 
