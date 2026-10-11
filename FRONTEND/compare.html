@@ -138,7 +138,7 @@ body { font-family:"Poppins",sans-serif; background:var(--bg); color:var(--text)
 </div>
 
 <script>
-const facultyData = [
+const demoData = [
   { name:"Dr. Adarsh M J",         role:"HOD & Associate Professor",   clarity:9.5, knowledge:9.8, interaction:9.2, overall:9.5 },
   { name:"Prof. Gagana Deepa J",   role:"Branch Coordinator",          clarity:9.0, knowledge:9.2, interaction:9.5, overall:9.2 },
   { name:"Prof. Srikanth A S",     role:"Mathematics Faculty",         clarity:9.0, knowledge:9.5, interaction:9.0, overall:9.2 },
@@ -156,11 +156,37 @@ const metricLabels = { clarity:"Clarity", knowledge:"Knowledge", interaction:"In
 const selA = document.getElementById("facultyA");
 const selB = document.getElementById("facultyB");
 
-// Populate selects
-facultyData.forEach((f, i) => {
-  selA.innerHTML += `<option value="${i}">${f.name}</option>`;
-  selB.innerHTML += `<option value="${i}">${f.name}</option>`;
-});
+let facultyData = demoData;
+
+// Live data from API/rating.php — falls back to demo values offline
+async function init() {
+  try {
+    const res = await fetch("../API/rating.php");
+    const data = await res.json();
+    if (data.success && data.metrics && data.labels.length >= 2) {
+      facultyData = data.labels.map((name, i) => {
+        const demo = demoData.find(f => f.name === name);
+        const m = data.metrics[name] || {};
+        return {
+          name: name,
+          role: demo ? demo.role : "Faculty",
+          clarity: m.clarity != null ? m.clarity : data.ratings[i],
+          knowledge: m.knowledge != null ? m.knowledge : data.ratings[i],
+          interaction: m.interaction != null ? m.interaction : data.ratings[i],
+          overall: data.ratings[i]
+        };
+      });
+    }
+  } catch (err) {
+    console.warn("Ratings API unreachable — using demo data", err);
+  }
+  facultyData.forEach((f, i) => {
+    selA.innerHTML += `<option value="${i}">${f.name}</option>`;
+    selB.innerHTML += `<option value="${i}">${f.name}</option>`;
+  });
+}
+
+init();
 
 function compare() {
   if (selA.value === "" || selB.value === "") return;

@@ -107,15 +107,15 @@ body { font-family:"Poppins",sans-serif; background:var(--bg); color:var(--text)
   <!-- Stats Strip -->
   <div class="stats-strip">
     <div class="stat-box">
-      <div class="num">9</div>
+      <div class="num" id="statFaculty">9</div>
       <div class="label">Faculty Ranked</div>
     </div>
     <div class="stat-box">
-      <div class="num">1,245</div>
+      <div class="num" id="statFeedback">1,245</div>
       <div class="label">Total Feedback</div>
     </div>
     <div class="stat-box">
-      <div class="num">9.0</div>
+      <div class="num" id="statAvg">9.0</div>
       <div class="label">Avg Department Score</div>
     </div>
     <div class="stat-box">
@@ -135,7 +135,7 @@ body { font-family:"Poppins",sans-serif; background:var(--bg); color:var(--text)
 </div>
 
 <script>
-const faculty = [
+const demoFaculty = [
   { name:"Dr. Adarsh M J",         role:"HOD",               score:9.5, trend:"up"   },
   { name:"Prof. Gagana Deepa J",   role:"Branch Coordinator", score:9.2, trend:"up"   },
   { name:"Prof. Srikanth A S",     role:"Mathematics",        score:9.2, trend:"same" },
@@ -154,8 +154,14 @@ const classes = ["gold","silver","bronze"];
 const trendIcons = { up:"↑", down:"↓", same:"—" };
 const trendClass = { up:"trend-up", down:"trend-down", same:"trend-same" };
 
+let faculty = demoFaculty;
+
+function render() {
+podiumEl.innerHTML = "";
+listEl.innerHTML = "";
+
 // Podium (top 3 in order: 2nd, 1st, 3rd)
-const order = [1, 0, 2];
+const order = [1, 0, 2].filter(i => i < faculty.length);
 order.forEach(i => {
   const f = faculty[i];
   podiumEl.innerHTML += `
@@ -190,6 +196,36 @@ faculty.forEach((f, i) => {
     </div>
   `;
 });
+}
+
+function setStat(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+// Live data from API/rating.php — falls back to demo values offline
+async function init() {
+  try {
+    const res = await fetch("../API/rating.php");
+    const data = await res.json();
+    if (data.success && data.labels.length > 0) {
+      faculty = data.labels.map((name, i) => {
+        const demo = demoFaculty.find(f => f.name === name);
+        return { name: name, role: demo ? demo.role : "Faculty", score: data.ratings[i], trend: "same" };
+      });
+      const total = data.counts.reduce((s, c) => s + c, 0);
+      const avg = data.ratings.reduce((s, r) => s + r, 0) / data.ratings.length;
+      setStat("statFaculty", data.labels.length);
+      setStat("statFeedback", total.toLocaleString());
+      setStat("statAvg", avg.toFixed(1));
+    }
+  } catch (err) {
+    console.warn("Ratings API unreachable — using demo data", err);
+  }
+  render();
+}
+
+init();
 </script>
 </body>
 </html>

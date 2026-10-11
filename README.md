@@ -107,12 +107,9 @@ http://localhost/facultylens/FRONTEND/index.html
 
 | Method | Endpoint | Description |
 |---|---|---|
-| `POST` | `API/register.php` | Account creation with role validation & bcrypt hashing |
-| `POST` | `API/login.php` | Credential verification & session initialization |
-| `POST`/`GET` | `API/logout.php` | Session destruction |
-| `POST` | `API/feedback.php` | Submit rated feedback (clarity, depth, interaction, comments) |
 | `POST` | `API/change-password.php` | Secure session password update |
 | `GET` | `API/rating.php` | Fetch teacher rating averages & feedback counters |
+| `GET` | `API/admin-stats.php` | Admin dashboard counts (users, feedback, faculty, online) |
 
 ---
 

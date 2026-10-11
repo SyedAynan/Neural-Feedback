@@ -179,6 +179,15 @@
       box-shadow:0 10px 28px rgba(140,80,255,0.6);
     }
 
+    /* --- Mini feedback form --- */
+    .mini-rate-row { display:flex; gap:12px; margin-bottom:12px; flex-wrap:wrap; }
+    .mini-rate-row label { display:flex; flex-direction:column; gap:6px; font-size:13px; color:#cfbaff; flex:1; min-width:120px; }
+    .mini-rate-row select { padding:10px; border-radius:10px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25); color:#fff; font-size:14px; font-family:inherit; outline:none; }
+    .mini-rate-row select option { background:#1a1a2e; }
+    button.btn { border:none; cursor:pointer; font-family:inherit; font-size:16px; }
+    button.btn:disabled { opacity:0.6; cursor:default; }
+    .fb-msg { min-height:20px; font-size:13px; margin-top:10px; text-align:center; }
+    .fb-msg.error { color:#ff6b6b; }
   </style>
 </head>
 <body>
@@ -229,10 +238,111 @@
 
     <div class="section">
       <h2>Submit Your Feedback</h2>
-      <textarea placeholder="Write your feedback..."></textarea>
-      <a href="thank_u.html" class="btn">Submit Feedback</a>
+      <div class="mini-rate-row">
+        <label>Clarity
+          <select id="fbClarity">
+            <option value="" disabled selected>Rate</option>
+            <option value="10">10 - Excellent</option>
+            <option value="9">9</option>
+            <option value="8">8</option>
+            <option value="7">7</option>
+            <option value="6">6</option>
+            <option value="5">5 - Average</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1 - Poor</option>
+          </select>
+        </label>
+        <label>Knowledge
+          <select id="fbKnowledge">
+            <option value="" disabled selected>Rate</option>
+            <option value="10">10 - Excellent</option>
+            <option value="9">9</option>
+            <option value="8">8</option>
+            <option value="7">7</option>
+            <option value="6">6</option>
+            <option value="5">5 - Average</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1 - Poor</option>
+          </select>
+        </label>
+        <label>Interaction
+          <select id="fbInteraction">
+            <option value="" disabled selected>Rate</option>
+            <option value="10">10 - Excellent</option>
+            <option value="9">9</option>
+            <option value="8">8</option>
+            <option value="7">7</option>
+            <option value="6">6</option>
+            <option value="5">5 - Average</option>
+            <option value="4">4</option>
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1 - Poor</option>
+          </select>
+        </label>
+      </div>
+      <textarea id="fbComment" placeholder="Write your feedback..."></textarea>
+      <button type="button" class="btn" id="fbSubmit" data-teacher="Dr. Thayaba Nausheen A" data-subject="Operating System">Submit Feedback</button>
+      <p class="fb-msg" id="fbMsg"></p>
     </div>
 
   </div>
+
+  <script>
+  document.getElementById("fbSubmit").addEventListener("click", async () => {
+    const btn = document.getElementById("fbSubmit");
+    const msg = document.getElementById("fbMsg");
+    const clarity = document.getElementById("fbClarity").value;
+    const knowledge = document.getElementById("fbKnowledge").value;
+    const interaction = document.getElementById("fbInteraction").value;
+    const comment = document.getElementById("fbComment").value.trim();
+    msg.textContent = "";
+    msg.className = "fb-msg";
+    if (!clarity || !knowledge || !interaction) {
+      msg.textContent = "Please rate clarity, knowledge, and interaction.";
+      msg.classList.add("error");
+      return;
+    }
+    if (!comment) {
+      msg.textContent = "Please write your feedback before submitting.";
+      msg.classList.add("error");
+      return;
+    }
+    btn.textContent = "Submitting...";
+    btn.disabled = true;
+    try {
+      const res = await fetch("../../API/feedback.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          teacher: btn.dataset.teacher,
+          subject: btn.dataset.subject,
+          clarity: parseInt(clarity),
+          knowledge: parseInt(knowledge),
+          interaction: parseInt(interaction),
+          comment: comment
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        window.location.href = "thank_u.html";
+      } else {
+        msg.textContent = data.message || "Submission failed - please try again.";
+        msg.classList.add("error");
+        btn.textContent = "Submit Feedback";
+        btn.disabled = false;
+      }
+    } catch (err) {
+      msg.textContent = "Could not reach the server - is the PHP backend running?";
+      msg.classList.add("error");
+      btn.textContent = "Submit Feedback";
+      btn.disabled = false;
+    }
+  });
+  </script>
 </body>
 </html>
