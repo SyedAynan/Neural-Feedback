@@ -244,7 +244,7 @@
 
     <!-- Actions -->
     <div class="action-bar">
-      <button class="action-btn primary" onclick="alert('Export started — downloading feedback_report.csv')">📊 Export Reports</button>
+      <button class="action-btn primary" onclick="exportAdminCSV()">📊 Export Reports</button>
       <button class="action-btn" onclick="alert('Feedback window is now OPEN for submissions')">⏳ Open Feedback Window</button>
       <button class="action-btn" onclick="alert('All abuse-flagged comments have been reviewed')">🚫 Review Flagged</button>
       <button class="action-btn" onclick="alert('System cache cleared successfully')">🔄 Clear Cache</button>
@@ -383,5 +383,28 @@
     </div>
 
   </div>
+
+<script>
+function exportAdminCSV() {
+  const rows = [["Section", "Col1", "Col2", "Col3", "Col4", "Col5", "Col6"]];
+  document.querySelectorAll(".admin-table-wrap").forEach(wrap => {
+    const title = wrap.querySelector("h3")?.textContent?.trim() || "Table";
+    wrap.querySelectorAll("tbody tr").forEach(tr => {
+      const cells = Array.from(tr.querySelectorAll("td")).map(td => td.textContent.trim());
+      while (cells.length < 6) cells.push("");
+      rows.push([title, ...cells.slice(0, 6)]);
+    });
+  });
+  const csv = rows.map(r => r.map(c => '"' + String(c).replace(/"/g, '""') + '"').join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "admin_report_" + new Date().toISOString().split("T")[0] + ".csv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+</script>
+
 </body>
 </html>
