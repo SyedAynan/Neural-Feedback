@@ -139,6 +139,20 @@ This project is open-source under the **MIT License**. Created for the **Departm
 
 ---
 
+## ⚖️ Copyright, Attribution & Academic Integrity
+
+**Copyright (c) 2026 Syed Ayan. All rights reserved.**
+
+> ### 🎓 Notice Regarding Academic Submissions & Plagiarism
+> This repository represents original research, implementation, and portfolio work created by **Syed Ayan** for academic evaluation and faculty analytics.
+>
+> - **Evaluation & Portfolio Use:** This codebase is publicly visible for prospective employers, technical recruiters, peer review, and individual educational study.
+> - **Prohibition of Plagiarized Academic Submission:** You may **not** submit this project, its architecture, or substantial portions of its code/documentation as your own academic assignment, course project, dissertation, or degree requirement at any school, college, or university. Doing so violates institutional academic integrity policies and honor codes.
+> - **Open-Source Terms:** Software distribution rights remain subject to the terms of the included [MIT License](LICENSE), requiring mandatory preservation of original copyright notices and author attribution.
+> - **Third-Party Rights:** All third-party libraries and dependencies remain the property of their respective owners.
+
+---
+
 <div align="center">
   <sub>Maintained with ❤️ by <b>SyedAynan / Neural-Feedback</b></sub>
 </div>
