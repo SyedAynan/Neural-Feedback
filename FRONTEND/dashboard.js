@@ -89,25 +89,55 @@ document.addEventListener("DOMContentLoaded", () => {
   const avgRating = document.getElementById("avgRating");
   const feedbackCount = document.getElementById("feedbackCount");
 
-  if (avgRating) {
-    avgRating.textContent = "0";
+  // Live stats from API/rating.php — falls back to demo values offline
+  async function loadLiveStats() {
+    try {
+      const res = await fetch("../API/rating.php");
+      if (!res.ok) throw new Error("bad status");
+      const data = await res.json();
+      if (!data.success || !data.ratings.length) return false;
+
+      const total = data.counts.reduce((s, c) => s + c, 0);
+      const avg = data.ratings.reduce((s, r) => s + r, 0) / data.ratings.length;
+
+      if (avgRating) animateRating(avgRating, avg);
+      if (feedbackCount) {
+        feedbackCount.textContent = "0";
+        setTimeout(() => animateCounter(feedbackCount, total), 300);
+      }
+      const top = document.getElementById("topFaculty");
+      if (top && data.labels.length) top.textContent = data.labels[0];
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  function animateRating(el, target) {
+    el.textContent = "0";
     setTimeout(() => {
       let val = 0;
+      const step = Math.max(target / 40, 0.05);
       const interval = setInterval(() => {
-        val += 0.1;
-        if (val >= 4.3) {
-          val = 4.3;
+        val += step;
+        if (val >= target) {
+          val = target;
           clearInterval(interval);
         }
-        avgRating.textContent = val.toFixed(1);
+        el.textContent = val.toFixed(1);
       }, 40);
     }, 300);
   }
 
-  if (feedbackCount) {
-    feedbackCount.textContent = "0";
-    setTimeout(() => animateCounter(feedbackCount, 1245), 300);
-  }
+  loadLiveStats().then(ok => {
+    if (ok) return;
+    // Demo fallback when the PHP backend is not running
+    if (avgRating) animateRating(avgRating, 4.3);
+    if (feedbackCount) {
+      feedbackCount.textContent = "0";
+      setTimeout(() => animateCounter(feedbackCount, 1245), 300);
+    }
+  });
 
   /* =====================================
      7. TOAST NOTIFICATION

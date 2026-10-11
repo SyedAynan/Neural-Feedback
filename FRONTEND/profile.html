@@ -260,7 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Change password
-  document.getElementById("changePwBtn").addEventListener("click", () => {
+  document.getElementById("changePwBtn").addEventListener("click", async () => {
     const curr = document.getElementById("currentPw").value;
     const newP = document.getElementById("newPw").value;
     const conf = document.getElementById("confirmPw").value;
@@ -269,10 +269,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (newP.length < 6) return showToast("⚠️ Password must be 6+ characters");
     if (newP !== conf) return showToast("⚠️ Passwords don't match");
 
-    showToast("✅ Password updated successfully");
-    document.getElementById("currentPw").value = "";
-    document.getElementById("newPw").value = "";
-    document.getElementById("confirmPw").value = "";
+    try {
+      const res = await fetch("../API/change-password.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ current: curr, password: newP })
+      });
+      const data = await res.json();
+      if (data.success) {
+        showToast("✅ Password updated successfully");
+        document.getElementById("currentPw").value = "";
+        document.getElementById("newPw").value = "";
+        document.getElementById("confirmPw").value = "";
+      } else {
+        showToast("⚠️ " + (data.message || "Password change failed"));
+      }
+    } catch {
+      // Backend not running — demo mode can't persist changes
+      showToast("⚠️ Backend offline — password change needs the PHP server");
+    }
   });
 
   // Toast

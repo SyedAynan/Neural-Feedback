@@ -117,6 +117,7 @@ http://localhost/facultylens/FRONTEND/index.html
 | `POST` | `API/login.php` | Verify credentials, start session |
 | `POST`/`GET` | `API/logout.php` | Destroy session (JSON for AJAX, redirect for browser) |
 | `POST` | `API/feedback.php` | Save rated feedback (teacher, subject, clarity/knowledge/interaction, comment) |
+| `POST` | `API/change-password.php` | Change password for the logged-in session (verifies current password) |
 | `GET` | `API/rating.php` | Per-teacher average rating + feedback counts |
 
 All JSON endpoints send CORS headers and answer `OPTIONS` preflights.
