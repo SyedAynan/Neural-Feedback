@@ -24,10 +24,10 @@ if (
     exit;
 }
 
-$name     = $conn->real_escape_string($data["name"]);
-$email    = $conn->real_escape_string($data["email"]);
+$name     = $data["name"];
+$email    = $data["email"];
 $password = password_hash($data["password"], PASSWORD_DEFAULT);
-$role     = $conn->real_escape_string($data["role"]);
+$role     = $data["role"];
 
 // Validate role
 $validRoles = ["student", "faculty", "admin", "hod"];
@@ -37,11 +37,15 @@ if (!in_array($role, $validRoles)) {
 }
 
 // Check for duplicate email
-$check = $conn->query("SELECT id FROM users WHERE email='$email'");
+$checkStmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
+$checkStmt->bind_param("s", $email);
+$checkStmt->execute();
+$check = $checkStmt->get_result();
 if ($check->num_rows > 0) {
     echo json_encode(["success" => false, "message" => "Email already exists"]);
     exit;
 }
+$checkStmt->close();
 
 // Generate username from name
 $username = strtolower(str_replace(" ", "_", $name));

@@ -139,7 +139,7 @@ Seeded with **9 faculty** and **2 demo users** (password: `password` — demo-on
 - Prepared statements on auth paths; session guard in `BACKEND/auth.php`
 - Role-based access (`student` / `faculty` / `admin` / `hod`)
 - `.env` is gitignored — copy `.env.example`, never commit secrets
-- Known limits (honest): demo credentials ship in the seed, `API/db.php` is a legacy hardcoded-credential file, CORS is wide-open (`*`), no rate limiting / CSRF tokens. See [SECURITY.md](SECURITY.md). Do not expose this to the public internet as-is.
+- Known limits (honest): demo credentials ship in the seed, CORS is wide-open (`*`), no rate limiting / CSRF tokens. See [SECURITY.md](SECURITY.md). Do not expose this to the public internet as-is.
 
 ---
 
