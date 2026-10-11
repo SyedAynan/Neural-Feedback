@@ -13,6 +13,9 @@ require "../BACKEND/connect.php";
 
 $query = "
     SELECT teacher,
+    ROUND(AVG(clarity), 2) AS clarity,
+    ROUND(AVG(knowledge), 2) AS knowledge,
+    ROUND(AVG(interaction), 2) AS interaction,
     ROUND(AVG((clarity + knowledge + interaction) / 3), 2) AS rating,
     COUNT(*) AS total_feedback
     FROM feedback
@@ -31,18 +34,25 @@ if (!$result) {
 $labels    = [];
 $ratings   = [];
 $counts    = [];
+$metrics   = [];
 
 while ($row = $result->fetch_assoc()) {
     $labels[]  = $row["teacher"];
     $ratings[] = floatval($row["rating"]);
     $counts[]  = intval($row["total_feedback"]);
+    $metrics[$row["teacher"]] = [
+        "clarity"     => floatval($row["clarity"]),
+        "knowledge"   => floatval($row["knowledge"]),
+        "interaction" => floatval($row["interaction"])
+    ];
 }
 
 echo json_encode([
     "success" => true,
     "labels"  => $labels,
     "ratings" => $ratings,
-    "counts"  => $counts
+    "counts"  => $counts,
+    "metrics" => $metrics
 ]);
 
 $conn->close();

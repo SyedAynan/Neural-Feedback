@@ -219,25 +219,25 @@
     <div class="admin-grid">
       <div class="admin-card">
         <h3><span class="icon">👥</span> Total Users</h3>
-        <div class="stat-value">128</div>
+        <div class="stat-value" id="statUsers">128</div>
         <div class="stat-label">Students, Faculty, and Admins</div>
       </div>
 
       <div class="admin-card">
         <h3><span class="icon">📝</span> Total Feedback</h3>
-        <div class="stat-value">1,245</div>
+        <div class="stat-value" id="statFeedback">1,245</div>
         <div class="stat-label">Across all faculty members</div>
       </div>
 
       <div class="admin-card">
         <h3><span class="icon">👨‍🏫</span> Active Faculty</h3>
-        <div class="stat-value">9</div>
+        <div class="stat-value" id="statFaculty">9</div>
         <div class="stat-label">Department of Data Science</div>
       </div>
 
       <div class="admin-card">
         <h3><span class="icon">🟢</span> Online Now</h3>
-        <div class="stat-value">14</div>
+        <div class="stat-value" id="statOnline">14</div>
         <div class="stat-label">Active sessions</div>
       </div>
     </div>
@@ -404,6 +404,22 @@ function exportAdminCSV() {
   a.click();
   URL.revokeObjectURL(url);
 }
+
+// Live stats from API/admin-stats.php — falls back to demo values offline
+(async function loadAdminStats() {
+  try {
+    const res = await fetch("../API/admin-stats.php");
+    const data = await res.json();
+    if (!data.success) return;
+    const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+    set("statUsers", data.users.toLocaleString());
+    set("statFeedback", data.feedback.toLocaleString());
+    set("statFaculty", data.faculty);
+    set("statOnline", data.online);
+  } catch (err) {
+    console.warn("Admin stats API unreachable — using demo data", err);
+  }
+})();
 </script>
 
 </body>
