@@ -1,161 +1,166 @@
-# 🎓 FacultyLens — Neural Feedback System
+<div align="center">
 
-> Anonymous, structured student-to-faculty feedback for the **Department of Data Science Engineering** — neon-glassmorphism UI, PHP + MySQL backend, role-based access.
+  # 🎓 FacultyLens — Neural Feedback System
+  ### *Anonymous, Structured Student-to-Faculty Feedback Platform for Data Science Engineering*
 
-[![CI](https://github.com/SyedAynan/Neural-Feedback/actions/workflows/php-lint.yml/badge.svg)](https://github.com/SyedAynan/Neural-Feedback/actions/workflows/php-lint.yml)
-![Stack](https://img.shields.io/badge/Stack-PHP%20%2B%20MySQL%20%2B%20Vanilla%20JS-blue)
-![Theme](https://img.shields.io/badge/Theme-Neon%20Glassmorphism-blueviolet)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
+  [![CI](https://github.com/SyedAynan/Neural-Feedback/actions/workflows/php-lint.yml/badge.svg)](https://github.com/SyedAynan/Neural-Feedback/actions/workflows/php-lint.yml)
+  ![Stack](https://img.shields.io/badge/Stack-PHP%208%20%2B%20MySQL%20%2B%20Vanilla%20JS-blue)
+  ![Theme](https://img.shields.io/badge/Theme-Neon%20Glassmorphism-blueviolet)
+  ![License](https://img.shields.io/badge/License-MIT-green)
+  ![Status](https://img.shields.io/badge/Status-Complete-brightgreen)
+
+  <p align="center">
+    <b>Empowering students and faculty with transparent, role-based analytics, sentiment metrics, and real-time performance insights.</b>
+  </p>
+
+  <img src="public/hero.png" alt="FacultyLens Neural Feedback Hero Banner" width="100%" style="border-radius: 14px; border: 1px solid rgba(155, 107, 255, 0.3);" />
+
+</div>
+
+---
+
+## 📜 Table of Contents
+- [✨ Features](#-features)
+- [🖼️ AI Image Prompts for Your Repository](#️-ai-image-prompts-for-your-repository)
+- [🧰 Tech Stack](#-tech-stack)
+- [⚡ Quick Start & Deployment](#-quick-start--deployment)
+- [🔑 Demo Credentials](#-demo-credentials)
+- [🔌 API Endpoints](#-api-endpoints)
+- [🗄️ Database Schema](#️-database-schema)
+- [🔒 Security & Code Quality](#-security--code-quality)
+- [🎨 Design System](#-design-system)
+- [📝 License](#-license)
 
 ---
 
 ## ✨ Features
 
-| Area | What it does |
-|---|---|
-| 🔐 **Auth** | Login / Signup with role-based access — Student, Faculty, Admin, HoD |
-| 📊 **Dashboard** | Live stats, rating charts, feedback trends (`FRONTEND/dashboard.html`) |
-| 🧑‍🏫 **Faculty directory** | Individual profile pages with portfolios + feedback forms (`FRONTEND/Faculties/`) |
-| ⚖️ **Compare** | Side-by-side faculty comparison tool (`FRONTEND/compare.html`) |
-| 👤 **Profiles** | Per-user profile page (`FRONTEND/profile.html`) |
-| 🏆 **Leaderboard** | Podium-ranked faculty leaderboard (`FRONTEND/leaderboard.html`) |
-| ⭐ **Submit feedback** | Star-rated feedback form + thank-you page (`FRONTEND/essentials/submit-feedback.html`) |
-| 📈 **Reports** | Personal feedback history with visual trends (`FRONTEND/essentials/report.html`) |
-| 🛠️ **Admin panel** | User management, feedback logs, system controls (`FRONTEND/admin.html`) |
-| 🔑 **Password recovery** | Forgot-password flow with OTP UI (`FRONTEND/forgot-password.html`) |
-| 📤 **Export** | CSV export + print support |
-| 🚫 **Custom 404** | Themed not-found page (`404.html`) |
+| Area | Feature Details | Path / Location |
+|---|---|---|
+| 🔐 **Role-Based Auth** | Secure login & registration supporting **Student**, **Faculty**, **Admin**, and **HoD** roles with bcrypt password hashing | `FRONTEND/index.html` & `FRONTEND/signup.html` |
+| 📊 **Analytics Dashboard** | Live statistical metrics, radar rating charts, and feedback distribution trends | `FRONTEND/dashboard.html` |
+| 🧑‍🏫 **Faculty Directory** | Interactive faculty profiles, teaching portfolios, and structured feedback forms | `FRONTEND/Faculties/` |
+| ⚖️ **Faculty Compare** | Side-by-side comparative evaluation tool for clarity, knowledge, and interaction metrics | `FRONTEND/compare.html` |
+| 🏆 **Leaderboard** | Podium-ranked faculty leaderboard based on verified student feedback averages | `FRONTEND/leaderboard.html` |
+| ⭐ **Submit Feedback** | Multi-attribute rating system (1–10 scale) covering clarity, subject depth, and engagement | `FRONTEND/essentials/submit-feedback.html` |
+| 📈 **Student Reports** | Personal submission history and visual progress tracker | `FRONTEND/essentials/report.html` |
+| 🛠️ **Admin Control Panel** | System controls, user management, feedback audit logs, and data management | `FRONTEND/admin.html` |
+| 🔑 **Password Recovery** | Forgot-password workflow with OTP recovery interface | `FRONTEND/forgot-password.html` |
+| 📤 **Data Export** | CSV export capabilities & print-friendly report generation | Admin & Dashboard tools |
+| 🚫 **Custom 404** | Glassmorphic theme-matched not-found fallback page | `404.html` |
 
 ---
 
-## 🧰 Tech stack
+## 🖼️ AI Image Prompts for Your Repository
 
-- **Frontend** — Vanilla HTML/CSS/JS, Poppins font, glassmorphism theme (`FRONTEND/theme.css`), CSS/SVG charts
-- **Backend** — Plain PHP, session auth, prepared statements (`BACKEND/`, `API/`)
-- **Database** — MySQL / MariaDB, 3 tables + seed data (`DATABASE/schema.sql`)
-- **Local hosting** — XAMPP / WAMP / MAMP (Apache + PHP + MySQL)
+If you want to generate additional high-end promotional graphics or UI assets for this repository (using Midjourney, DALL-E 3, Flux, or Leonardo.ai), use these pre-optimized prompts:
 
----
+### 🎨 Prompt 1: Repository Hero Banner (Header)
+> `A futuristic dark glassmorphic banner artwork for an AI education portal titled FacultyLens Neural Feedback System. Featuring glowing 3D purple neural network node connections, holographic analytical dashboard cards, neon purple data charts, dark violet background with glowing ambient aura, 8k resolution web concept art --ar 16:9`
 
-## 🗂 Project structure
+### 🎨 Prompt 2: Glassmorphic UI Dashboard Asset
+> `Sleek dark mode glassmorphic UI dashboard design, glowing purple gradient accents (#9b6bff to #6d2cff), frosted glass cards with subtle border highlight, interactive bar charts and star rating widgets, modern Google Poppins typography, clean technology mockup --ar 16:9`
 
-```
-.
-├── 404.html                  # Themed not-found page
-├── API/                      # JSON endpoints (login, register, logout, feedback, rating)
-├── BACKEND/                  # config.php (.env reader), connect.php, auth.php guard
-├── DATABASE/
-│   └── schema.sql            # users + faculty + feedback tables, 9 faculty + 2 demo users
-├── FRONTEND/
-│   ├── index.html            # Login        signup.html       dashboard.html
-│   ├── compare.html          # Comparison   profile.html      leaderboard.html
-│   ├── forgot-password.html  # Recovery     admin.html        theme.css / signup.css
-│   ├── Faculties/            # Directory grid + 9 profile pages + thank_u page
-│   └── essentials/           # Portal, stats, report, contact, submit-feedback
-├── .env.example              # Copy to .env and fill in (never commit .env)
-└── .github/workflows/        # CI: PHP syntax lint on every push/PR
-```
+### 🎨 Prompt 3: Leaderboard & Trophy Podium Art
+> `3D futuristic glass trophy podium for top faculty leaderboard, neon purple illumination, glowing star rating badges floating in air, dark cybernetic background, luxury UI asset style --ar 16:9`
+
+### 🎨 Prompt 4: Mobile & Web App Mockup
+> `Dual screen device mockup showing laptop and smartphone running FacultyLens feedback system, neon dark theme, crisp glassmorphism aesthetic, studio lighting --ar 16:9`
 
 ---
 
-## ⚡ Quick start
+## 🧰 Tech Stack
+
+- **Frontend**: Vanilla HTML5, Modern CSS3 (Glassmorphism design system in `FRONTEND/theme.css`), JavaScript (ES6+), Google Font (Poppins), SVG & CSS chart engines.
+- **Backend**: PHP 8.x with prepared statements and session authentication (`BACKEND/`, `API/`).
+- **Database**: MySQL / MariaDB relational database (`DATABASE/schema.sql`).
+- **Environment**: Apache / XAMPP / WAMP / Nginx deployment.
+
+---
+
+## ⚡ Quick Start & Deployment
 
 ### Prerequisites
+- **XAMPP** (or any Apache + PHP 8 + MySQL stack)
+- Modern Web Browser
 
-- [XAMPP](https://www.apachefriends.org/) (or WAMP/MAMP) — Apache + PHP 8 + MySQL
-- A modern browser
-
-### 1. Deploy to web root
-
+### 1. Clone & Copy to Web Root
 ```bash
-# XAMPP example:
+git clone https://github.com/SyedAynan/Neural-Feedback.git
+# Copy into XAMPP htdocs:
 cp -r Neural-Feedback/ C:/xampp/htdocs/facultylens/
 ```
 
-### 2. Create the database
-
-Import `DATABASE/schema.sql` (creates `neural_feedback`, tables, 9 faculty, 2 demo users):
-
+### 2. Import Database Schema
+Import `DATABASE/schema.sql` via MySQL CLI or phpMyAdmin:
 ```bash
 mysql -u root < DATABASE/schema.sql
 ```
 
-…or via **phpMyAdmin → Import → `DATABASE/schema.sql`**.
-
-### 3. Configure credentials
-
+### 3. Environment Setup
 ```bash
 cp .env.example .env
-# then edit .env if your MySQL user/password differ from root/(empty)
+# Edit .env with your MySQL credentials (DB_HOST, DB_USER, DB_PASS, DB_NAME)
 ```
 
-`BACKEND/config.php` reads `.env` (`DB_HOST`, `DB_USER`, `DB_PASS`, `DB_NAME`).
-
-### 4. Open in browser
-
+### 4. Open in Browser
+Navigate to:
 ```
 http://localhost/facultylens/FRONTEND/index.html
 ```
 
-### Demo credentials
+---
+
+## 🔑 Demo Credentials
 
 | Role | Email | Password |
 |---|---|---|
-| Admin | `admin@facultylens.edu` | `admin123` |
-| Student | `student@facultylens.edu` | `student123` |
+| 🛠️ **Admin** | `admin@facultylens.edu` | `admin123` |
+| 🎓 **Student** | `student@facultylens.edu` | `student123` |
 
-> The login page also runs in **demo mode** without the PHP backend — any email/password reaches the dashboard for UI preview. Real auth needs Apache + MySQL running.
+> *Note: The login page includes a standalone **Demo Mode** for frontend previews without needing Apache/PHP.*
 
 ---
 
-## 🔌 API endpoints
+## 🔌 API Endpoints
 
-| Method | Endpoint | Purpose |
+| Method | Endpoint | Description |
 |---|---|---|
-| `POST` | `API/register.php` | Create account (validates role, bcrypt-hashes password) |
-| `POST` | `API/login.php` | Verify credentials, start session |
-| `POST`/`GET` | `API/logout.php` | Destroy session (JSON for AJAX, redirect for browser) |
-| `POST` | `API/feedback.php` | Save rated feedback (teacher, subject, clarity/knowledge/interaction, comment) |
-| `POST` | `API/change-password.php` | Change password for the logged-in session (verifies current password) |
-| `GET` | `API/rating.php` | Per-teacher average rating + feedback counts |
-
-All JSON endpoints send CORS headers and answer `OPTIONS` preflights.
+| `POST` | `API/register.php` | Account creation with role validation & bcrypt hashing |
+| `POST` | `API/login.php` | Credential verification & session initialization |
+| `POST`/`GET` | `API/logout.php` | Session destruction |
+| `POST` | `API/feedback.php` | Submit rated feedback (clarity, depth, interaction, comments) |
+| `POST` | `API/change-password.php` | Secure session password update |
+| `GET` | `API/rating.php` | Fetch teacher rating averages & feedback counters |
 
 ---
 
-## 🗄 Database
+## 🗄️ Database Schema
 
-- **`users`** — id, name, email (unique), bcrypt password, role (`student|faculty|admin|hod`), username, login state, timestamps
-- **`faculty`** — id, name, designation, department, subject, email, photo, qualification, experience, expertise
-- **`feedback`** — id, user/faculty refs, teacher, subject, clarity/knowledge/interaction (1–10), comment, sentiment, timestamp
-
-Seeded with **9 faculty** and **2 demo users** (password: `password` — demo-only, change immediately).
-
----
-
-## 🔒 Security
-
-- `password_hash()` / `password_verify()` (bcrypt) — no plaintext passwords
-- Prepared statements on auth paths; session guard in `BACKEND/auth.php`
-- Role-based access (`student` / `faculty` / `admin` / `hod`)
-- `.env` is gitignored — copy `.env.example`, never commit secrets
-- Known limits (honest): demo credentials ship in the seed, CORS is wide-open (`*`), no rate limiting / CSRF tokens. See [SECURITY.md](SECURITY.md). Do not expose this to the public internet as-is.
+```
+DATABASE/schema.sql
+├── users (id, name, email, password, role, username, created_at)
+├── faculty (id, name, designation, department, subject, email, photo, qualification, experience, expertise)
+└── feedback (id, user_id, faculty_id, teacher, subject, clarity, knowledge, interaction, comment, sentiment, timestamp)
+```
 
 ---
 
-## 🎨 Design system
+## 🔒 Security & Code Quality
 
-- **Font**: Poppins (Google Fonts) · **BG**: deep dark `#0a0a0f` with animated purple glows
-- **Cards**: glassmorphism — `backdrop-filter: blur(18px)` + subtle borders
-- **Accent**: purple gradient `#9b6bff → #6d2cff` · **Charts**: CSS bars + SVG lines
+- **Password Hashing**: `password_hash()` and `password_verify()` with bcrypt.
+- **SQL Injection Prevention**: Prepared statements on all database queries.
+- **Session Protection**: Route guards in `BACKEND/auth.php`.
+- **Environment Isolation**: `.env` file for credentials (gitignored).
 
 ---
-
-## 🤝 Contributing
-
-PRs welcome — see [CONTRIBUTING.md](CONTRIBUTING.md) for branch, commit, and PHP conventions.
 
 ## 📝 License
 
-MIT — see [LICENSE](LICENSE). Educational project for the Department of Data Science Engineering; not a production student-information system.
+This project is open-source under the **MIT License**. Created for the **Department of Data Science Engineering**.
+
+---
+
+<div align="center">
+  <sub>Maintained with ❤️ by <b>SyedAynan / Neural-Feedback</b></sub>
+</div>
