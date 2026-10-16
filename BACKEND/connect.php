@@ -1,11 +1,22 @@
 <?php
 require_once __DIR__ . "/config.php";
 
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+// mysqli(host, user, pass, db, port) — port is required for managed MySQL
+// (Aiven/TiDB use custom ports like 23123, not 3306)
+$conn = new mysqli(
+    DB_HOST,
+    DB_USER,
+    DB_PASS,
+    DB_NAME,
+    DB_PORT
+);
 
 if ($conn->connect_error) {
+    http_response_code(500);
     die(json_encode([
         "success" => false,
         "message" => "Database connection failed"
     ]));
 }
+
+$conn->set_charset("utf8mb4");

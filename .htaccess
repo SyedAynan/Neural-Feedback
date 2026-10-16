@@ -1,0 +1,13 @@
+# Root .htaccess — Render PHP services run Apache, so this is honored.
+# Protect sensitive directories/files that live in the repo root but must
+# never be web-accessible (docroot = repo root keeps ../API/*.php links working).
+
+# Block direct access to backend internals, schema, env
+RedirectMatch 403 ^/BACKEND/.*
+RedirectMatch 403 ^/DATABASE/.*
+RedirectMatch 403 ^/\.env.*
+RedirectMatch 403 ^/\.git.*
+RedirectMatch 403 ^/\.github.*
+
+# Default landing page
+DirectoryIndex index.php

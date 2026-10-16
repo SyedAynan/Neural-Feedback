@@ -1,0 +1,33 @@
+# ============================================================
+# File: render.yaml
+#
+# Purpose:
+#     Render Blueprint for deploying Neural-Feedback (FacultyLens).
+#     PHP app — Render's native PHP runtime serves the repo root as
+#     the web root via Apache. No build step needed.
+#
+# Docs: https://render.com/docs/php
+# ============================================================
+
+services:
+  - type: web
+    name: neural-feedback
+    runtime: php
+    plan: free
+    region: singapore  # closest to the Neon/Aiven DB in ap-southeast-1
+    # PHP web services on Render serve the repo root with Apache.
+    # index.php at root redirects / → /FRONTEND/index.html
+    # .htaccess blocks /BACKEND/, /DATABASE/, /.env from web access.
+    envVars:
+      - key: DB_HOST
+        sync: false          # set manually in Render dashboard (Aiven host)
+      - key: DB_PORT
+        sync: false          # Aiven's custom port (e.g. 23123)
+      - key: DB_USER
+        sync: false          # e.g. avnadmin
+      - key: DB_PASS
+        sync: false          # secret — set manually
+      - key: DB_NAME
+        value: neural_feedback
+      - key: DB_SSL
+        value: "0"           # set "1" if your MySQL provider requires TLS
